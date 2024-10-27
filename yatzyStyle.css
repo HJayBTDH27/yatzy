@@ -12,6 +12,10 @@
     font-weight: bold;
 }
 
+img {
+    object-fit: contain;
+}
+
 #rollButton {
     background: radial-gradient(white, darkGrey);
     padding: 10px 20px;
