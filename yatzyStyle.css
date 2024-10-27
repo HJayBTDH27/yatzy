@@ -1,0 +1,51 @@
+.game-container {
+    background-color:forestgreen;
+    padding: 20px;
+    margin: auto;
+    width:50%
+}
+
+#dice1, #dice2, #dice3, #dice4, #dice5 {
+    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+}
+
+#rollButton {
+    background: radial-gradient(white, darkGrey);
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+#rollButton:hover {
+    background: radial-gradient(white, black);
+    font-weight: bolder;
+    color: red;
+}
+
+.score-container {
+    background-color: white;
+    padding: 20px;
+    margin: auto;
+    width:50%
+}
+
+.display-section {
+    border-style: solid;
+    border-width: medium;
+    border-color: black;
+}
+
+.score-section {
+    border-style: solid;
+    border-width: 1px;
+    color: black;
+}
+
+.total-score {
+    border-style: solid;
+    border-width: 1px;
+    color: black;
+    font-weight: bolder;
+}
