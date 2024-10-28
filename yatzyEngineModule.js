@@ -1,4 +1,4 @@
-const die = {dieValue:0, altText:"Die value rolled is ", dieImage:"images/", saved: false};
+const die = {dieId: "", dieValue:0, altText:"Die value rolled is ", dieImage:"images/", saved: false};
 const diceValues = [];
 const totalScore = 0;
 const savedDice = [];
@@ -33,9 +33,11 @@ function clickToSaveDie(id) {
 function reRoll() {
     let diceNumbers = 5 - savedDice.length;
     let tempArray = multiRoll(diceNumbers);
+    let counter = 0;
     for (let i = 0; i < 5; i++) {
-        if (dieObject.saved = false) {
-            
+        if (die.saved == false) {
+            diceValues[i] = tempArray[counter];
+            counter += 1;
         }
     }
 }
