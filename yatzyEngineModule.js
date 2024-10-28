@@ -1,6 +1,8 @@
-const die = {dieValue:0, altText:"Die value rolled is ", dieImage:"src"};
+const die = {dieValue:0, altText:"Die value rolled is ", dieImage:"images/", saved: false};
 const diceValues = [];
 const totalScore = 0;
+const savedDice = [];
+const rollCounter = 0;
 
 function initializeGame() {
     // set or reset scores and dice to play a new game
@@ -17,11 +19,23 @@ function updateDiceDisplay() {
 }
 
 function startGame() {
-    for (let i = 0; i < 5; i++) {
-        diceValues[i] = rollDice();
-    }
+    diceValues = diceValues.concat(multiRoll(5));
+    updateDiceDisplay();
 }
 
-function clickToSaveDie() {
-    return null;
+function clickToSaveDie(id) {
+    savedDice.push(id);
+    console.log(savedDice);
+    // dieObject saved = true
+    // add code to highlight selected die with css
+}
+
+function reRoll() {
+    let diceNumbers = 5 - savedDice.length;
+    let tempArray = multiRoll(diceNumbers);
+    for (let i = 0; i < 5; i++) {
+        if (dieObject.saved = false) {
+            
+        }
+    }
 }
