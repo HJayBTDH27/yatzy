@@ -14,6 +14,7 @@ const totalScore = 0;
 const savedDice = [];
 const rollCounter = 0;
 const dieArray = [];
+const dieHistory = [];
 
 
 function initializeGame() {
@@ -46,6 +47,7 @@ function startGame() {
     for (let x = 0; x < diceValues.length; x++) {
         dieArray[x].dieValue = diceValues[x];
         altTextWriter( x );
+        rollHistory( x );
     }
     rollCounter += 1;
     updateDiceDisplay();
@@ -66,6 +68,7 @@ function reRoll() {
     for (let i = 0; i < dieArray.length; i++) {
         if (dieArray[i].saved == false && counter < diceNumbers) {
             diceValues[i] = tempArray[counter];
+            rollHistory(tempArray[counter]);
             counter += 1;
         }
         else {
@@ -74,4 +77,8 @@ function reRoll() {
     }
     rollCounter += 1;
     updateDiceDisplay();
+}
+
+function rollHistory( die ) {
+    dieHistory.push(die);
 }

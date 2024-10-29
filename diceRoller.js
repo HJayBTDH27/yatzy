@@ -15,3 +15,4 @@ function multiRoll( diceAmount) {
     }
     return diceArray;
 }
+
