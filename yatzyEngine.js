@@ -29,7 +29,7 @@ function updateScore(category, score) {
 
 function oneTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 1) {
             total += x;
         }
@@ -40,7 +40,7 @@ function oneTotals(array) {
 
 function twoTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 2) {
             total += x;
         }
@@ -51,7 +51,7 @@ function twoTotals(array) {
 
 function threeTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 3) {
             total += x;
         }
@@ -62,7 +62,7 @@ function threeTotals(array) {
 
 function fourTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 4) {
             total += x;
         }
@@ -73,7 +73,7 @@ function fourTotals(array) {
 
 function fiveTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 5) {
             total += x;
         }
@@ -84,7 +84,7 @@ function fiveTotals(array) {
 
 function sixTotals(array) {
     let total = 0;
-    for (let x in array) {
+    for (let x of array) {
         if (x == 6) {
             total += x;
         }
