@@ -35,6 +35,7 @@ function oneTotals(array) {
         }
     }
     updateScore("ones", total);
+    console.log("Ones");
     return total;
 }
 
@@ -46,6 +47,7 @@ function twoTotals(array) {
         }
     }
     updateScore("twos", total);
+    console.log("twos");
     return total;
 }
 
@@ -57,6 +59,7 @@ function threeTotals(array) {
         }
     }
     updateScore("threes", total);
+    console.log("threes");
     return total;
 }
 
@@ -68,6 +71,7 @@ function fourTotals(array) {
         }
     }
     updateScore("fours", total);
+    console.log("fours");
     return total;
 }
 
@@ -79,6 +83,7 @@ function fiveTotals(array) {
         }
     }
     updateScore("fives", total);
+    console.log("fives");
     return total;
 }
 
@@ -90,6 +95,7 @@ function sixTotals(array) {
         }
     }
     updateScore("sixes", total);
+    console.log("sixes");
     return total;
 }
 
@@ -102,25 +108,34 @@ function subtotalAndBonus(array) {
     }
     updateScore("upperScore", sum);
     updateScore("bonus", bonus);
+    console.log("Upper Score/Bonus");
     return sum, bonus;
 }
 
-function onePairTwoPair( array ) {
+function onePairTwoPair(array) {
     const numberCount = {};
     let sum = 0;
-
+    let tally = 0;
     for (let number of array) {
         numberCount[number] = (numberCount[number] || 0) + 1;
     }
 
     for (let [number, count] of Object.entries(numberCount)) {
         if (count >= 2) {
+            tally += 1;
             sum += Number(number) * 2;
         }
     }
-    // TODO: Fix this up
-    updateScore("onePair", sum);
-    return sum;
+    if (tally > 1) {
+        updateScore("twoPair", sum);
+        console.log("twopair");
+        return;
+    }
+    else {
+        updateScore("onePair", sum);
+        console.log("Onepair");
+        return;
+    }
 }
 
 function threeOfAKind(array) {
@@ -137,6 +152,7 @@ function threeOfAKind(array) {
         }
     }
     updateScore("threeOfAKind", sum);
+    console.log("three of a kind");
     return sum;
 }
 
@@ -154,6 +170,7 @@ function fourOfAKind(array) {
         }
     }
     updateScore("fourOfAKind", sum);
+    console.log("four of a kind");
     return sum;
 }
 
@@ -176,6 +193,7 @@ function smallStraight(array) {
         }
     }
     updateScore("smallStraight", 0);
+    console.log("small straight");
     return 0;  // No small straight found
 }
 
@@ -198,6 +216,7 @@ function largeStraight(array) {
         }
     }
     updateScore("largeStraight", 0);
+    console.log("large straight");
     return 0;  // No large straight found
 }
 
@@ -225,6 +244,7 @@ function sumFullHouse(array) {
     if (isFullHouse(array)) {
         let x = array.reduce((sum, number) => sum + number, 0);
         updateScore("fullHouse", x);
+        console.log("full house");
         return x;
     }
     return 0;
@@ -234,6 +254,7 @@ function chance(array) {
     let total = 0;
     let sum = array.reduce((total, number) => total + number, 0);
     updateScore("chance", sum);
+    console.log("chance");
     return sum;
 }
 
@@ -249,34 +270,37 @@ function yatzyRoll(array) {
     if (flag == true) {
         let total = 50;
         updateScore("yatzy", total);
+        console.log("yatzy!");
         return total;
     }
 }
 
-function finalScore( array ) {    
+function finalScore(array) {
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
     updateScore("finalScore", sum);
+    console.log("Totes");
     return sum;
 }
 
 
-function yatzyTestingFunction( ar ) {
-    oneTotals( ar );
-    twoTotals( ar );
-    threeTotals( ar );
-    fourTotals( ar );
-    fiveTotals( ar );
-    sixTotals( ar );
-    subtotalAndBonus( scoreTable );
-    onePairTwoPair( ar );
-    threeOfAKind( ar );
-    fourOfAKind( ar );
-    sumFullHouse( ar );
-    smallStraight( ar );
-    largeStraight( ar );
-    yatzyRoll( ar );
-    chance( ar );
+function yatzyTestingFunction(ar) {
+    oneTotals(ar);
+    twoTotals(ar);
+    threeTotals(ar);
+    fourTotals(ar);
+    fiveTotals(ar);
+    sixTotals(ar);
+    subtotalAndBonus(scoreTable);
+    onePairTwoPair(ar);
+    threeOfAKind(ar);
+    fourOfAKind(ar);
+    sumFullHouse(ar);
+    smallStraight(ar);
+    largeStraight(ar);
+    yatzyRoll(ar);
+    chance(ar);
     finalScore(scoreTable);
+    console.log("Testing Function");
 }
 
 function displayScoreTable() {
@@ -288,9 +312,10 @@ function displayScoreTable() {
         p.textContent = `${category}: ${scoreTable[category]}`;
         scoreTableDiv.appendChild(p);
     }
+    console.log("Display");
 }
 document.addEventListener('DOMContentLoaded', displayScoreTable);
-document.addEventListener('click',  () => {
+document.addEventListener('click', () => {
     yatzyTestingFunction(getYatzyArray());
     displayScoreTable();
 });
