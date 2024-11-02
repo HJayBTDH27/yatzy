@@ -15,7 +15,8 @@ const scoreTable = {
     "smallStraight": 0,
     "largeStraight": 0,
     "yatzy": 0,
-    "chance": 0
+    "chance": 0,
+    "finalScore": 0
 }
 
 function updateScore(category, score) {
@@ -29,8 +30,8 @@ function updateScore(category, score) {
 function oneTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 1) {
-            total += x.dieValue;
+        if (x == 1) {
+            total += x;
         }
     }
     updateScore("ones", total);
@@ -40,8 +41,8 @@ function oneTotals(array) {
 function twoTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 2) {
-            total += x.dieValue;
+        if (x == 2) {
+            total += x;
         }
     }
     updateScore("twos", total);
@@ -51,8 +52,8 @@ function twoTotals(array) {
 function threeTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 3) {
-            total += x.dieValue;
+        if (x == 3) {
+            total += x;
         }
     }
     updateScore("threes", total);
@@ -62,8 +63,8 @@ function threeTotals(array) {
 function fourTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 4) {
-            total += x.dieValue;
+        if (x == 4) {
+            total += x;
         }
     }
     updateScore("fours", total);
@@ -73,8 +74,8 @@ function fourTotals(array) {
 function fiveTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 5) {
-            total += x.dieValue;
+        if (x == 5) {
+            total += x;
         }
     }
     updateScore("fives", total);
@@ -84,8 +85,8 @@ function fiveTotals(array) {
 function sixTotals(array) {
     let total = 0;
     for (let x in array) {
-        if (x.dieValue == 6) {
-            total += x.dieValue;
+        if (x == 6) {
+            total += x;
         }
     }
     updateScore("sixes", total);
@@ -93,9 +94,9 @@ function sixTotals(array) {
 }
 
 function subtotalAndBonus(array) {
-    let total = 0;
     let bonus = 0;
-    sum = array.map(e => total += e);
+    let sum = Object.values(scoreTable).slice(0, 6).reduce((acc, curr) => acc + curr, 0);
+    updateScore("finalScore", sum);
     if (sum >= 63) {
         bonus += 50;
     }
@@ -231,7 +232,7 @@ function sumFullHouse(array) {
 
 function chance(array) {
     let total = 0;
-    let sum = array.map(e => total += e);
+    let sum = array.reduce((total, number) => total + number, 0);
     updateScore("chance", sum);
     return sum;
 }
@@ -254,9 +255,45 @@ function yatzyRoll(array) {
 
 function finalScore( array ) {    
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
+    updateScore("finalScore", sum);
     return sum;
 }
 
+
+function yatzyTestingFunction( ar ) {
+    oneTotals( ar );
+    twoTotals( ar );
+    threeTotals( ar );
+    fourTotals( ar );
+    fiveTotals( ar );
+    sixTotals( ar );
+    subtotalAndBonus( scoreTable );
+    onePairTwoPair( ar );
+    threeOfAKind( ar );
+    fourOfAKind( ar );
+    sumFullHouse( ar );
+    smallStraight( ar );
+    largeStraight( ar );
+    yatzyRoll( ar );
+    chance( ar );
+    finalScore(scoreTable);
+}
+
+function displayScoreTable() {
+    const scoreTableDiv = document.getElementById('scoreDisplay');
+    scoreTableDiv.innerHTML = '';  // Clear any existing content
+
+    for (let category in scoreTable) {
+        const p = document.createElement('p');
+        p.textContent = `${category}: ${scoreTable[category]}`;
+        scoreTableDiv.appendChild(p);
+    }
+}
+document.addEventListener('DOMContentLoaded', displayScoreTable);
+document.addEventListener('click',  () => {
+    yatzyTestingFunction(getYatzyArray());
+    displayScoreTable();
+});
 
 
 

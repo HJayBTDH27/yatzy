@@ -17,15 +17,16 @@
 // };
 
 const diceArray = [];
-const yatzyArray = []
+let yatzyArray = []
 let rollCount = 0;
 
 function rollDice() {
     let x = Math.floor(Math.random() * 6) + 1;
     rollCount += 1;
     diceArray.push(x);
-    yatzyArray.push(x);
-    if (yatzyArray.length > 5) yatzyArray.shift();
+    if (diceArray.length > 5) yatzyArray = diceArray.slice(-5);
+    else yatzyArray.push(x);
+    displayResults();
     return x;
 }
 
@@ -48,7 +49,8 @@ function displayResults() {
 }
 
 // Run the displayResults function when the DOM is fully loaded
-document.addEventListener('DOMContentLoaded',  displayResults);
+// document.addEventListener('DOMContentLoaded',  displayResults);
+// document.addEventListener('click',  displayResults);
 
 
 
