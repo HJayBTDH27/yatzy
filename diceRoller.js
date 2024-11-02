@@ -1,3 +1,4 @@
+//  -- DEPRECATED --
 // const diceIdValues = ["dice1", "dice2","dice3","dice4","dice5"];
 
 // class die {
@@ -15,6 +16,7 @@
 //         return Math.floor(Math.random() * 6) + 1;
 //     }
 // };
+//  -- DEPRECATED --
 
 const diceArray = [];
 let yatzyArray = []
@@ -48,6 +50,7 @@ function displayResults() {
     document.getElementById('rollCount').textContent = `Roll Count: ${getRollCount()}`;
 }
 
+//  -- DEPRECATED --
 // Run the displayResults function when the DOM is fully loaded
 // document.addEventListener('DOMContentLoaded',  displayResults);
 // document.addEventListener('click',  displayResults);
@@ -61,4 +64,5 @@ function displayResults() {
 //     }
 //     return diceArray;
 // }
+//  -- DEPRECATED --
 
