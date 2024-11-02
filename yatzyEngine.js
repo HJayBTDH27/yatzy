@@ -1,72 +1,106 @@
+const scoreTable = {
+    "ones": 0,
+    "twos": 0,
+    "threes": 0,
+    "fours": 0,
+    "fives": 0,
+    "sixes": 0,
+    "upperScore": 0,
+    "bonus": 0,
+    "onePair": 0,
+    "twoPair": 0,
+    "threeOfAKind": 0,
+    "fourOfAKind": 0,
+    "fullHouse": 0,
+    "smallStraight": 0,
+    "largeStraight": 0,
+    "yatzy": 0,
+    "chance": 0
+}
 
+function updateScore(category, score) {
+    if (scoreTable.hasOwnProperty(category)) {
+        scoreTable[category] = score;
+    } else {
+        console.log("Invalid category");
+    }
+}
 
-function oneTotals( array ) {
+function oneTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 1) {
             total += x.dieValue;
         }
     }
+    updateScore("ones", total);
     return total;
 }
 
-function twoTotals( array ) {
+function twoTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 2) {
             total += x.dieValue;
         }
     }
+    updateScore("twos", total);
     return total;
 }
 
-function threeTotals( array ) {
+function threeTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 3) {
             total += x.dieValue;
         }
     }
+    updateScore("threes", total);
     return total;
 }
 
-function fourTotals( array ) {
+function fourTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 4) {
             total += x.dieValue;
         }
     }
+    updateScore("fours", total);
     return total;
 }
 
-function fiveTotals( array ) {
+function fiveTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 5) {
             total += x.dieValue;
         }
     }
+    updateScore("fives", total);
     return total;
 }
 
-function sixTotals( array ) {
+function sixTotals(array) {
     let total = 0;
     for (let x in array) {
         if (x.dieValue == 6) {
             total += x.dieValue;
         }
     }
+    updateScore("sixes", total);
     return total;
 }
 
-function subtotalAndBonus ( array ) {
+function subtotalAndBonus(array) {
     let total = 0;
     let bonus = 0;
     sum = array.map(e => total += e);
     if (sum >= 63) {
         bonus += 50;
     }
+    updateScore("upperScore", sum);
+    updateScore("bonus", bonus);
     return sum, bonus;
 }
 
@@ -83,11 +117,12 @@ function onePairTwoPair( array ) {
             sum += Number(number) * 2;
         }
     }
-
+    // TODO: Fix this up
+    updateScore("onePair", sum);
     return sum;
 }
 
-function threeOfAKind( array ) {
+function threeOfAKind(array) {
     const numberCount = {};
     let sum = 0;
 
@@ -100,11 +135,11 @@ function threeOfAKind( array ) {
             sum += Number(number) * 3;
         }
     }
-
+    updateScore("threeOfAKind", sum);
     return sum;
 }
 
-function fourOfAKind( array ) {
+function fourOfAKind(array) {
     const numberCount = {};
     let sum = 0;
 
@@ -117,59 +152,91 @@ function fourOfAKind( array ) {
             sum += Number(number) * 4;
         }
     }
-
+    updateScore("fourOfAKind", sum);
     return sum;
 }
 
-function smallStraight( array ) {
+function smallStraight(array) {
     array.sort((a, b) => a - b);
     let consecutiveCount = 1;
-    
+    let sum = array[0]; // Start with the first number
+
     for (let i = 1; i < array.length; i++) {
         if (array[i] === array[i - 1] + 1) {
             consecutiveCount++;
+            sum += array[i];
             if (consecutiveCount === 4) {
-                // TODO: return the sum of the straight
-                return true;  // Found a small straight
+                updateScore("smallStraight", sum);
+                return sum;  // Found a small straight
             }
         } else if (array[i] !== array[i - 1]) {
             consecutiveCount = 1;  // Reset if not consecutive
+            sum = array[i]; // Reset sum with the current number
         }
     }
-    
-    return false;  // No small straight found
+    updateScore("smallStraight", 0);
+    return 0;  // No small straight found
 }
 
-function largeStraight( array ) {
+function largeStraight(array) {
     array.sort((a, b) => a - b);
     let consecutiveCount = 1;
-    
+    let sum = array[0]; // Start with the first number
+
     for (let i = 1; i < array.length; i++) {
         if (array[i] === array[i - 1] + 1) {
             consecutiveCount++;
+            sum += array[i];
             if (consecutiveCount === 5) {
-                // TODO: return the sum of the straight
-                return true;  // Found a large straight
+                updateScore("smallStraight", sum);
+                return sum;  // Found a large straight
             }
         } else if (array[i] !== array[i - 1]) {
             consecutiveCount = 1;  // Reset if not consecutive
+            sum = array[i]; // Reset sum with the current number
         }
     }
-    
-    return false;  // No large straight found
+    updateScore("largeStraight", 0);
+    return 0;  // No large straight found
 }
 
-function fullHouse() {
-    // some code
+function isFullHouse(array) {
+    if (array.length !== 5) return false;
+
+    const numberCount = {};
+
+    for (let number of array) {
+        numberCount[number] = (numberCount[number] || 0) + 1;
+    }
+
+    let hasThreeOfAKind = false;
+    let hasPair = false;
+
+    for (let count of Object.values(numberCount)) {
+        if (count === 3) hasThreeOfAKind = true;
+        if (count === 2) hasPair = true;
+    }
+
+    return hasThreeOfAKind && hasPair;
+}
+
+function sumFullHouse(array) {
+    if (isFullHouse(array)) {
+        let x = array.reduce((sum, number) => sum + number, 0);
+        updateScore("fullHouse", x);
+        return x;
+    }
+    return 0;
 }
 
 function chance(array) {
     let total = 0;
     let sum = array.map(e => total += e);
+    updateScore("chance", sum);
     return sum;
 }
 
-function yatzyRoll( array ) {
+function yatzyRoll(array) {
     let flag = false;
     for (let i = 1; i < array.length; i++) {
         if (array[i] === array[i - 1]) {
@@ -179,15 +246,14 @@ function yatzyRoll( array ) {
         }
     }
     if (flag == true) {
-        let total = 0;
-        let sum = array.map(e => total += e);
-        return sum;
+        let total = 50;
+        updateScore("yatzy", total);
+        return total;
     }
 }
 
-function finalScore( array ) {
-    let total = 0;
-    let sum = array.map(e => total += e);
+function finalScore( array ) {    
+    let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
     return sum;
 }
 

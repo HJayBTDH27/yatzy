@@ -1,13 +1,3 @@
-class die { constructor (id) {
-    this.dieId = id;
-    this.dieValue = 0;
-    this.altText = "Die value rolled is ";
-    this.dieImage = "images/" + id + ".png"; 
-    this.saved = false;}
-    altTextWriter( valueToWrite ) {
-        this.altText = this.altText + valueToWrite;}
-};
-
 const diceValues = [];
 const diceIdValues = ["dice1", "dice2","dice3","dice4","dice5"];
 const totalScore = 0;
@@ -34,13 +24,13 @@ function initializeGame() {
     }
 }
 
-function updateDiceDisplay() {
-    document.getElementById("dice1").innerText = diceValues[0];
-    document.getElementById("dice2").innerText = diceValues[1];
-    document.getElementById("dice3").innerText = diceValues[2];
-    document.getElementById("dice4").innerText = diceValues[3];
-    document.getElementById("dice5").innerText = diceValues[4];
-}
+// function updateDiceDisplay() {
+//     document.getElementById("dice1").innerText = diceValues[0];
+//     document.getElementById("dice2").innerText = diceValues[1];
+//     document.getElementById("dice3").innerText = diceValues[2];
+//     document.getElementById("dice4").innerText = diceValues[3];
+//     document.getElementById("dice5").innerText = diceValues[4];
+// }
 
 function startGame() {
     diceValues = diceValues.concat(multiRoll(5, diceIdValues));
