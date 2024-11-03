@@ -1,11 +1,28 @@
-.game-container {
-    background-color:forestgreen;
-    padding: 20px;
-    margin: auto;
-    width:50%
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+.game-container{
+    display: flex;
+    min-width: 350px;
+    flex-direction: column;
 }
 
-#dice1, #dice2, #dice3, #dice4, #dice5 {
+.dice-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: forestgreen;
+    padding: 20px;
+    min-width: 350px;
+}
+
+#dice1,
+#dice2,
+#dice3,
+#dice4,
+#dice5 {
+    display: flex;
     border-radius: 10px;
     width: 50px;
     height: 50px;
@@ -16,23 +33,28 @@ img {
     object-fit: contain;
 }
 
-#rollButton {
+button {
     background: radial-gradient(white, darkGrey);
     padding: 10px 20px;
     font-size: 1.2em;
     cursor: pointer;
 }
-#rollButton:hover {
+
+button:hover {
     background: radial-gradient(white, black);
     font-weight: bolder;
     color: red;
 }
 
+button.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 .score-container {
     background-color: white;
     padding: 20px;
-    margin: auto;
-    width:50%
+    min-width: 350px;
 }
 
 .display-section {
@@ -42,14 +64,28 @@ img {
 }
 
 .score-section {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
     border-style: solid;
     border-width: 1px;
     color: black;
 }
 
 .total-score {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
     border-style: solid;
     border-width: 1px;
     color: black;
     font-weight: bolder;
+}
+
+label {
+    border-style: solid;
+    border-width: 1px;
+}
+
+span {
+    border-style: solid;
+    border-width: 1px;
 }

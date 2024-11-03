@@ -18,16 +18,16 @@ let gameCount = 1;
 let roundCount = 1;
 
 const defaultDiceState = {
-    dice1: 0,
-    dice2: 0,
-    dice3: 0,
-    dice4: 0,
-    dice5: 0,
-    dice1Saved: false,
-    dice2Saved: false,
-    dice3Saved: false,
-    dice4Saved: false,
-    dice5Saved: false,
+    dice1Value: 0,
+    dice2Value: 0,
+    dice3Value: 0,
+    dice4Value: 0,
+    dice5Value: 0,
+    dice1: false,
+    dice2: false,
+    dice3: false,
+    dice4: false,
+    dice5: false,
 }
 const defaultGameState = {
     currentPlayer: 1,
@@ -71,7 +71,6 @@ function rollFiveDice() {
         diceState[i] = rollDice();
     }
     updateDiceDisplay();
-    turnRollCounter += 1;
 }
 
 function playGame () {
@@ -102,9 +101,40 @@ function updateDiceDisplay() {
     document.getElementById("dice5").innerText = diceState[4];
 }
 
+function calculateScore() {
+    /* build array from dice values;
+        display calculated scores for those values;
+    */
+}
+
 document.getElementById('rollButton').addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
+    const button = document.getElementById('rollButton');
+    button.classList.add('disabled');
+    button.disabled = true;
+    turnRollCounter += 1;
+});
+
+document.getElementById('re-rollButton').addEventListener('click', () => {
+    rollFiveDice();
+    updateDiceDisplay();
+    const button = document.getElementById('re-rollButton');
+    turnRollCounter += 1;
+    if( turnRollCounter > 3 ) {
+        button.classList.add('disabled');
+        button.disabled = true;
+    }
+});
+
+document.getElementById('scoreButton').addEventListener('click', () => {
+    const scoreButton = document.getElementById('scoreButton');
+
+    const reRollButton = document.getElementById('re-rollButton');
+    const rollButton = document.getElementById('rollButton');
+    rollButton.classList.toggle('disabled');
+    reRollButton.classList.toggle('disabled');
+    resetDiceState();
 });
 // function startGame() {
 //     diceValues = diceValues.concat(multiRoll(5, diceIdValues));

@@ -12,50 +12,72 @@
     <title>Yatzy!</title>
 </head>
 
-<body>
-    <div class="game-container">
-        <div id="dice1" onclick="clickToSaveDie(this.id)"></div>
-        <!-- <img id="dice1" src="images/dice1.png" alt="Dice rolled has a value of one"> -->
-        <div id="dice2" onclick="clickToSaveDie(this.id)"></div>
-        <div id="dice3" onclick="clickToSaveDie(this.id)"></div>
-        <div id="dice4" onclick="clickToSaveDie(this.id)"></div>
-        <div id="dice5" onclick="clickToSaveDie(this.id)"></div>
-        <button id="rollButton">Roll the dice!</button>
+<body class="flex-container">
+    <div class="game-container" style="flex-grow: 1">
+        <div class="dice-container" style="flex-grow: 9">
+            <div id="dice1" onclick="clickToSaveDie(this.id)"></div>
+            <!-- <img id="dice1" src="images/dice1.png" alt="Dice rolled has a value of one"> -->
+            <div id="dice2" onclick="clickToSaveDie(this.id)"></div>
+            <div id="dice3" onclick="clickToSaveDie(this.id)"></div>
+            <div id="dice4" onclick="clickToSaveDie(this.id)"></div>
+            <div id="dice5" onclick="clickToSaveDie(this.id)"></div>
+        </div>
+        <div style="display: flex; flex-grow: 1">
+            <button id="rollButton" style="flex-grow: 1">Roll the dice!</button>
+            <button id="re-rollButton" style="flex-grow: 1">Roll the dice again!</button>
+            <button id="scoreButton" style="flex-grow: 1">Score the dice!</button>
+        </div>
     </div>
-    <div class="score-container">
+    <div class="score-container" style="flex-grow: 1">
         <div class="display-section">
             <div class="score-section">
                 <label>Ones</label>
+                <span id="onesScore">0</span>
+                <span id="onesScore">0</span>
                 <span id="onesScore">0</span>
             </div>
             <div class="score-section">
                 <label>Twos</label>
                 <span id="twosScore">0</span>
+                <span id="twosScore">0</span>
+                <span id="twosScore">0</span>
             </div>
             <div class="score-section">
                 <label>Threes</label>
+                <span id="threesScore">0</span>
+                <span id="threesScore">0</span>
                 <span id="threesScore">0</span>
             </div>
             <div class="score-section">
                 <label>Fours</label>
                 <span id="foursScore">0</span>
+                <span id="foursScore">0</span>
+                <span id="foursScore">0</span>
             </div>
             <div class="score-section">
                 <label>Fives</label>
+                <span id="fivesScore">0</span>
+                <span id="fivesScore">0</span>
                 <span id="fivesScore">0</span>
             </div>
             <div class="score-section">
                 <label>Sixes</label>
                 <span id="sixesScore">0</span>
+                <span id="sixesScore">0</span>
+                <span id="sixesScore">0</span>
             </div>
         </div>
         <div class="display-section">
-            <div class="totalScore">
+            <div class="total-score">
                 <label>Sum</label>
+                <span id="upperScore">0</span>
+                <span id="upperScore">0</span>
                 <span id="upperScore">0</span>
             </div>
             <div class="score-section">
                 <label>Bonus</label>
+                <span id="bonusScore">0</span>
+                <span id="bonusScore">0</span>
                 <span id="bonusScore">0</span>
             </div>
         </div>
@@ -63,40 +85,56 @@
             <div class="score-section">
                 <label>Three of a Kind</label>
                 <span id="threeKindScore">0</span>
+                <span id="threeKindScore">0</span>
+                <span id="threeKindScore">0</span>
             </div>
             <div class="score-section">
                 <label>Four of a kind</label>
+                <span id="fourKindScore">0</span>
+                <span id="fourKindScore">0</span>
                 <span id="fourKindScore">0</span>
             </div>
             <div class="score-section">
                 <label>Full House</label>
                 <span id="fullHouseScore">0</span>
+                <span id="fullHouseScore">0</span>
+                <span id="fullHouseScore">0</span>
             </div>
             <div class="score-section">
                 <label>Small Straight</label>
+                <span id="smallStraightScore">0</span>
+                <span id="smallStraightScore">0</span>
                 <span id="smallStraightScore">0</span>
             </div>
             <div class="score-section">
                 <label>Large Straight</label>
                 <span id="largeStraightScore">0</span>
+                <span id="largeStraightScore">0</span>
+                <span id="largeStraightScore">0</span>
             </div>
             <div class="score-section">
                 <label>Chance</label>
+                <span id="chanceScore">0</span>
+                <span id="chanceScore">0</span>
                 <span id="chanceScore">0</span>
             </div>
             <div class="score-section">
                 <label>YATZY!!</label>
                 <span id="yatzyScore">0</span>
+                <span id="yatzyScore">0</span>
+                <span id="yatzyScore">0</span>
             </div>
         </div>
         <div class="display-section">
-            <div id="totalScore">
+            <div class="total-score">
                 <label>TOTAL SCORE</label>
+                <span id="totalScore">0</span>
+                <span id="totalScore">0</span>
                 <span id="totalScore">0</span>
             </div>
         </div>
+        <footer><a href="https://www.vecteezy.com/free-png/dice">Dice PNGs by Vecteezy</a></footer>
     </div>
 </body>
-<footer><a href="https://www.vecteezy.com/free-png/dice">Dice PNGs by Vecteezy</a></footer>
 
 </html>
