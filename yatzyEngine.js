@@ -1,3 +1,8 @@
+export { onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
+    fourOfAKind, fourTotals, fiveTotals, sixTotals, subtotalAndBonus,
+    smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll, 
+    finalScore };
+
 const scoreTable = {
     "ones": 0,
     "twos": 0,
@@ -283,42 +288,42 @@ function finalScore(array) {
 }
 
 
-function yatzyTestingFunction(ar) {
-    oneTotals(ar);
-    twoTotals(ar);
-    threeTotals(ar);
-    fourTotals(ar);
-    fiveTotals(ar);
-    sixTotals(ar);
-    subtotalAndBonus(scoreTable);
-    onePairTwoPair(ar);
-    threeOfAKind(ar);
-    fourOfAKind(ar);
-    sumFullHouse(ar);
-    smallStraight(ar);
-    largeStraight(ar);
-    yatzyRoll(ar);
-    chance(ar);
-    finalScore(scoreTable);
-    console.log("Testing Function");
-}
+// function yatzyTestingFunction(ar) {
+//     oneTotals(ar);
+//     twoTotals(ar);
+//     threeTotals(ar);
+//     fourTotals(ar);
+//     fiveTotals(ar);
+//     sixTotals(ar);
+//     subtotalAndBonus(scoreTable);
+//     onePairTwoPair(ar);
+//     threeOfAKind(ar);
+//     fourOfAKind(ar);
+//     sumFullHouse(ar);
+//     smallStraight(ar);
+//     largeStraight(ar);
+//     yatzyRoll(ar);
+//     chance(ar);
+//     finalScore(scoreTable);
+//     console.log("Testing Function");
+// }
 
-function displayScoreTable() {
-    const scoreTableDiv = document.getElementById('scoreDisplay');
-    scoreTableDiv.innerHTML = '';  // Clear any existing content
+// function displayScoreTable() {
+//     const scoreTableDiv = document.getElementById('scoreDisplay');
+//     scoreTableDiv.innerHTML = '';  // Clear any existing content
 
-    for (let category in scoreTable) {
-        const p = document.createElement('p');
-        p.textContent = `${category}: ${scoreTable[category]}`;
-        scoreTableDiv.appendChild(p);
-    }
-    console.log("Display");
-}
-document.addEventListener('DOMContentLoaded', displayScoreTable);
-document.addEventListener('click', () => {
-    yatzyTestingFunction(getYatzyArray());
-    displayScoreTable();
-});
+//     for (let category in scoreTable) {
+//         const p = document.createElement('p');
+//         p.textContent = `${category}: ${scoreTable[category]}`;
+//         scoreTableDiv.appendChild(p);
+//     }
+//     console.log("Display");
+// }
+// document.addEventListener('DOMContentLoaded', displayScoreTable);
+// document.addEventListener('click', () => {
+//     yatzyTestingFunction(getYatzyArray());
+//     displayScoreTable();
+// });
 
 
 

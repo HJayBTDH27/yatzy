@@ -17,7 +17,7 @@
 //     }
 // };
 //  -- DEPRECATED --
-
+export { rollDice };
 const diceArray = [];
 let yatzyArray = []
 let rollCount = 0;
@@ -28,7 +28,7 @@ function rollDice() {
     diceArray.push(x);
     if (diceArray.length > 5) yatzyArray = diceArray.slice(-5);
     else yatzyArray.push(x);
-    displayResults();
+    // displayResults();
     return x;
 }
 
@@ -44,11 +44,11 @@ function getRollCount() {
     return rollCount;
 }
 
-function displayResults() {
-    document.getElementById('diceArray').textContent = `Dice Array: ${getDiceArray().join(', ')}`;
-    document.getElementById('yatzyArray').textContent = `Yatzy Array: ${getYatzyArray().join(', ')}`;
-    document.getElementById('rollCount').textContent = `Roll Count: ${getRollCount()}`;
-}
+// function displayResults() {
+//     document.getElementById('diceArray').textContent = `Dice Array: ${getDiceArray().join(', ')}`;
+//     document.getElementById('yatzyArray').textContent = `Yatzy Array: ${getYatzyArray().join(', ')}`;
+//     document.getElementById('rollCount').textContent = `Roll Count: ${getRollCount()}`;
+// }
 
 //  -- DEPRECATED --
 // Run the displayResults function when the DOM is fully loaded
