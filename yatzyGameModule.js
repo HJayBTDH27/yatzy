@@ -2,10 +2,11 @@ import {
     onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
     fourOfAKind, fourTotals, fiveTotals, sixTotals, subtotalAndBonus,
     smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll,
-    finalScore, yatzyTestingFunction, displayScoreTable, scoreTable
+    finalScore, yatzyTestingFunction, displayScoreTable, defaultScoreTable
 } from './yatzyEngine.js';
 import { rollDice } from './diceRoller.js';
 
+let resetValue = false;
 let diceValues = [];
 let turnRollCounter = 1;
 const maxGames = 3;
@@ -37,6 +38,7 @@ const defaultGameState = {
 
 let gameState = { ...defaultGameState };
 let diceState = { ...defaultDiceState };
+let scoreTable = { ...defaultScoreTable };
 
 document.addEventListener('DOMContentLoaded', () => {
     rollButton.classList.add('disabled');
@@ -49,6 +51,10 @@ function resetGameState() {
     gameState = { ...defaultGameState };
     console.log("Game state reset to default values!");
 }
+function resetScoreTable() {
+    scoreTable = { ...defaultScoreTable };
+    console.log("Score table reset");
+}
 function resetDiceState() {
     diceState = { ...defaultDiceState };
     diceValues = Array(5).fill(0);
@@ -60,8 +66,16 @@ function resetElements() {
     const divElements = document.querySelectorAll('div');
 
     spanElements.forEach(span => {
-        span.textContent = '0';
-        span.classList.remove("saved");
+        if ( !span.classList.contains("saved") && !span.classList.contains("locked") && !resetValue) {
+            span.textContent = '0';
+        } else if ( span.classList.contains("saved") && !resetValue ){ 
+            span.classList.remove("saved");
+            span.classList.add("locked"); 
+        } else {
+            span.classList.remove("locked");
+            span.classList.remove("saved");
+            span.textContent = '0';
+        }
     });
 
     divElements.forEach(div => {
@@ -70,17 +84,22 @@ function resetElements() {
 }
 
 function initializeGame() {
+    resetValue = true;
     resetGameState();
     resetDiceState();
-    resetElements()
+    resetScoreTable();
+    resetElements();
     console.log("New game started!");
     rollButton.classList.toggle('disabled');
+    resetValue = false;
 }
 
 function rollFiveDice() {
+    let diceVal = "";
     for (let i = 0; i < 5; i++) {
-        diceState[i] = rollDice();
-        diceValues[i] = diceState[i];
+        diceVal = "dice" + (i+1).toString() + "Value";
+        diceState[diceVal] = rollDice();
+        diceValues[i] = diceState[diceVal];
     }
     updateDiceDisplay();
 }
@@ -134,15 +153,18 @@ function endGame() {
 }
 
 function updateDiceDisplay() {
+    
     for ( let i = 0; i < diceValues.length; i++ ) {
         let dieId = "dice" + (i + 1).toString();
-        document.getElementById(dieId).innerText = diceValues[i];
+        if ( !document.getElementById(dieId).classList.contains("saved") ) {
+            document.getElementById(dieId).innerText = diceValues[i];
+        }
     }
 }
 
 function calculateScore() {
-    yatzyTestingFunction(diceValues);
-    displayScoreTable(gameCount);
+    yatzyTestingFunction( diceValues, scoreTable );
+    displayScoreTable( gameCount, scoreTable );
 }
 
 rollButton.addEventListener('click', () => {

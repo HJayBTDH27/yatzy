@@ -47,6 +47,7 @@ button:hover {
 button.disabled {
     opacity: 0.4;
     cursor: not-allowed;
+    user-select: none;
 }
 
 .score-container {
@@ -89,6 +90,7 @@ span {
 }
 
 .locked {
+    border: 2px solid black;
     font-weight: bolder;
     user-select: none;
 }
