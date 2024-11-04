@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="w3.css"> -->
     <link rel="stylesheet" href="yatzyStyle.css">
-    <script type="module" src="yatzyGameModule.js"></script>
+
     <script type="module" src="yatzyEngine.js"></script>
     <script type="module" src="diceRoller.js"></script>
     <title>Yatzy!</title>
@@ -15,16 +15,16 @@
 <body class="flex-container">
     <div class="game-container" style="flex-grow: 1">
         <div class="dice-container" style="flex-grow: 9">
-            <div id="dice1" onclick="clickToSaveDie(this.id)"></div>
+            <div class="die" id="dice1"></div>
             <!-- <img id="dice1" src="images/dice1.png" alt="Dice rolled has a value of one"> -->
-            <div id="dice2" onclick="clickToSaveDie(this.id)"></div>
-            <div id="dice3" onclick="clickToSaveDie(this.id)"></div>
-            <div id="dice4" onclick="clickToSaveDie(this.id)"></div>
-            <div id="dice5" onclick="clickToSaveDie(this.id)"></div>
+            <div class="die" id="dice2"></div>
+            <div class="die" id="dice3"></div>
+            <div class="die" id="dice4"></div>
+            <div class="die" id="dice5"></div>
         </div>
         <div style="display: flex; flex-grow: 1">
             <button id="rollButton" style="flex-grow: 1">Roll the dice!</button>
-            <button id="re-rollButton" style="flex-grow: 1">Roll the dice again!</button>
+            <button id="reRollButton" style="flex-grow: 1">Roll the dice again!</button>
             <button id="scoreButton" style="flex-grow: 1">Score the dice!</button>
         </div>
     </div>
@@ -32,109 +32,110 @@
         <div class="display-section">
             <div class="score-section">
                 <label>Ones</label>
-                <span id="onesScore">0</span>
-                <span id="onesScore">0</span>
-                <span id="onesScore">0</span>
+                <span id="onesScoreRound1">0</span>
+                <span id="onesScoreRound2">0</span>
+                <span id="onesScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Twos</label>
-                <span id="twosScore">0</span>
-                <span id="twosScore">0</span>
-                <span id="twosScore">0</span>
+                <span id="twosScoreRound1">0</span>
+                <span id="twosScoreRound2">0</span>
+                <span id="twosScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Threes</label>
-                <span id="threesScore">0</span>
-                <span id="threesScore">0</span>
-                <span id="threesScore">0</span>
+                <span id="threesScoreRound1">0</span>
+                <span id="threesScoreRound2">0</span>
+                <span id="threesScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Fours</label>
-                <span id="foursScore">0</span>
-                <span id="foursScore">0</span>
-                <span id="foursScore">0</span>
+                <span id="foursScoreRound1">0</span>
+                <span id="foursScoreRound2">0</span>
+                <span id="foursScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Fives</label>
-                <span id="fivesScore">0</span>
-                <span id="fivesScore">0</span>
-                <span id="fivesScore">0</span>
+                <span id="fivesScoreRound1">0</span>
+                <span id="fivesScoreRound2">0</span>
+                <span id="fivesScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Sixes</label>
-                <span id="sixesScore">0</span>
-                <span id="sixesScore">0</span>
-                <span id="sixesScore">0</span>
+                <span id="sixesScoreRound1">0</span>
+                <span id="sixesScoreRound2">0</span>
+                <span id="sixesScoreRound3">0</span>
             </div>
         </div>
         <div class="display-section">
             <div class="total-score">
                 <label>Sum</label>
-                <span id="upperScore">0</span>
-                <span id="upperScore">0</span>
-                <span id="upperScore">0</span>
+                <span id="upperScoreRound1">0</span>
+                <span id="upperScoreRound2">0</span>
+                <span id="upperScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Bonus</label>
-                <span id="bonusScore">0</span>
-                <span id="bonusScore">0</span>
-                <span id="bonusScore">0</span>
+                <span id="bonusScoreRound1">0</span>
+                <span id="bonusScoreRound2">0</span>
+                <span id="bonusScoreRound3">0</span>
             </div>
         </div>
         <div class="display-section">
             <div class="score-section">
                 <label>Three of a Kind</label>
-                <span id="threeKindScore">0</span>
-                <span id="threeKindScore">0</span>
-                <span id="threeKindScore">0</span>
+                <span id="threeOfAKindScoreRound1">0</span>
+                <span id="threeOfAKindScoreRound2">0</span>
+                <span id="threeOfAKindScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Four of a kind</label>
-                <span id="fourKindScore">0</span>
-                <span id="fourKindScore">0</span>
-                <span id="fourKindScore">0</span>
+                <span id="fourOfAKindScoreRound1">0</span>
+                <span id="fourOfAKindScoreRound2">0</span>
+                <span id="fourOfAKindScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Full House</label>
-                <span id="fullHouseScore">0</span>
-                <span id="fullHouseScore">0</span>
-                <span id="fullHouseScore">0</span>
+                <span id="fullHouseScoreRound1">0</span>
+                <span id="fullHouseScoreRound2">0</span>
+                <span id="fullHouseScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Small Straight</label>
-                <span id="smallStraightScore">0</span>
-                <span id="smallStraightScore">0</span>
-                <span id="smallStraightScore">0</span>
+                <span id="smallStraightScoreRound1">0</span>
+                <span id="smallStraightScoreRound2">0</span>
+                <span id="smallStraightScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Large Straight</label>
-                <span id="largeStraightScore">0</span>
-                <span id="largeStraightScore">0</span>
-                <span id="largeStraightScore">0</span>
+                <span id="largeStraightScoreRound1">0</span>
+                <span id="largeStraightScoreRound2">0</span>
+                <span id="largeStraightScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>Chance</label>
-                <span id="chanceScore">0</span>
-                <span id="chanceScore">0</span>
-                <span id="chanceScore">0</span>
+                <span id="chanceScoreRound1">0</span>
+                <span id="chanceScoreRound2">0</span>
+                <span id="chanceScoreRound3">0</span>
             </div>
             <div class="score-section">
                 <label>YATZY!!</label>
-                <span id="yatzyScore">0</span>
-                <span id="yatzyScore">0</span>
-                <span id="yatzyScore">0</span>
+                <span id="yatzyScoreRound1">0</span>
+                <span id="yatzyScoreRound2">0</span>
+                <span id="yatzyScoreRound3">0</span>
             </div>
         </div>
         <div class="display-section">
             <div class="total-score">
                 <label>TOTAL SCORE</label>
-                <span id="totalScore">0</span>
-                <span id="totalScore">0</span>
-                <span id="totalScore">0</span>
+                <span id="finalScoreRound1">0</span>
+                <span id="finalScoreRound2">0</span>
+                <span id="finalScoreRound3">0</span>
             </div>
         </div>
         <footer><a href="https://www.vecteezy.com/free-png/dice">Dice PNGs by Vecteezy</a></footer>
     </div>
+    <script type="module" src="yatzyGameModule.js"></script>
 </body>
 
 </html>

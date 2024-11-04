@@ -2,20 +2,19 @@ import {
     onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
     fourOfAKind, fourTotals, fiveTotals, sixTotals, subtotalAndBonus,
     smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll,
-    finalScore
+    finalScore, yatzyTestingFunction, displayScoreTable, scoreTable
 } from './yatzyEngine.js';
 import { rollDice } from './diceRoller.js';
 
-const diceValues = [];
-const diceIdValues = ["dice1", "dice2", "dice3", "dice4", "dice5"];
-// let totalScore = 0;
-const savedDice = [];
+let diceValues = [];
 let turnRollCounter = 1;
-const dieArray = [];
-const dieHistory = [];
+const maxGames = 3;
 const maxRounds = 15;
 let gameCount = 1;
 let roundCount = 1;
+const scoreButton = document.getElementById('scoreButton');
+const reRollButton = document.getElementById('reRollButton');
+const rollButton = document.getElementById('rollButton');
 
 const defaultDiceState = {
     dice1Value: 0,
@@ -31,12 +30,21 @@ const defaultDiceState = {
 }
 const defaultGameState = {
     currentPlayer: 1,
-    currentRound: 1,
-    totalScores: [0],  // a one-player game
+    currentGame: 1,
+    totalScores: [0],
     winner: null
 };
+
 let gameState = { ...defaultGameState };
 let diceState = { ...defaultDiceState };
+
+document.addEventListener('DOMContentLoaded', () => {
+    rollButton.classList.add('disabled');
+    reRollButton.classList.add('disabled');
+    scoreButton.classList.add('disabled');
+    initializeGame();
+});
+
 function resetGameState() {
     gameState = { ...defaultGameState };
     console.log("Game state reset to default values!");
@@ -46,40 +54,48 @@ function resetDiceState() {
     console.log("Dice state reset to default values!");
 }
 
+function resetElements() {
+    const spanElements = document.querySelectorAll('span');
+    const divElements = document.querySelectorAll('div');
+
+    spanElements.forEach(span => {
+        span.textContent = '0';
+        span.classList.remove("saved");
+    });
+
+    divElements.forEach(div => {
+        div.classList.remove("saved");
+    });
+}
+
 function initializeGame() {
     resetGameState();
     resetDiceState();
+    resetElements()
     console.log("New game started!");
-    // set or reset scores and dice to play a new game
-    // diceValues = [];
-    // totalScore = 0;
-    // savedDice = [];
-    // turnRollCounter = 0;
-    // initialize 5 dice objects from the die class
-    // const dice1 = new die("dice1");
-    // const dice2 = new die("dice2");
-    // const dice3 = new die("dice3");
-    // const dice4 = new die("dice4");
-    // const dice5 = new die("dice5");
-    // for (let x in diceIdValues) {
-    //     dieArray[x] = new die (diceIdValues[x]);
-    // }
+    rollButton.classList.toggle('disabled');
 }
 
 function rollFiveDice() {
-    for ( let i = 0; i < 5; i++ ) {
+    for (let i = 0; i < 5; i++) {
         diceState[i] = rollDice();
+        diceValues[i] = diceState[i];
     }
     updateDiceDisplay();
 }
 
-function playGame () {
-    if ( turnRollCounter > 3 ) {
-        turnRollCounter = 1;
-        resetDiceState();
-        roundCount += 1;
-        if (roundCount == 16) endGame();
+function reRollDice(obj) {
+    let valKey = "";
+    for (const key in obj) {
+        if (obj[key] === false) {
+            valKey = key + "Value";
+            console.log(valKey);
+            obj[valKey] = rollDice();
+            diceValues[key.slice(-1)] = obj[valKey];
+            console.log(diceValues);
+        }
     }
+    updateDiceDisplay();
 }
 
 function endGame() {
@@ -89,6 +105,21 @@ function endGame() {
         gameState.winner = 2;
     } else {
         gameState.winner = "Tie";
+    }
+    gameCount += 1;
+    if (gameCount > maxGames) {
+        const playAgain = confirm("Do you want to play again?");
+        if (playAgain) {
+            const spanElements = document.querySelectorAll('span');
+
+            spanElements.forEach(span => {
+                span.textContent = '0';
+                span.classList.remove("saved");
+            });
+            initializeGame();
+        } else {
+            alert("Thank you for playing!");
+        }
     }
     console.log(`Game over! Winner: Player ${gameState.winner}`);
 }
@@ -102,77 +133,71 @@ function updateDiceDisplay() {
 }
 
 function calculateScore() {
-    /* build array from dice values;
-        display calculated scores for those values;
-    */
+    yatzyTestingFunction(diceValues);
+    displayScoreTable(gameCount);
 }
 
-document.getElementById('rollButton').addEventListener('click', () => {
+rollButton.addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
-    const button = document.getElementById('rollButton');
-    button.classList.add('disabled');
-    button.disabled = true;
+    calculateScore();
+    scoreButton.classList.toggle('disabled');
+    rollButton.classList.toggle('disabled');
+    reRollButton.classList.toggle('disabled');
     turnRollCounter += 1;
 });
 
-document.getElementById('re-rollButton').addEventListener('click', () => {
-    rollFiveDice();
+reRollButton.addEventListener('click', () => {
+    reRollDice( diceState );
     updateDiceDisplay();
-    const button = document.getElementById('re-rollButton');
+    calculateScore();
     turnRollCounter += 1;
-    if( turnRollCounter > 3 ) {
-        button.classList.add('disabled');
-        button.disabled = true;
+    if (turnRollCounter > 3) {
+        reRollButton.classList.toggle('disabled');
     }
 });
 
-document.getElementById('scoreButton').addEventListener('click', () => {
-    const scoreButton = document.getElementById('scoreButton');
-
-    const reRollButton = document.getElementById('re-rollButton');
-    const rollButton = document.getElementById('rollButton');
+scoreButton.addEventListener('click', () => {
     rollButton.classList.toggle('disabled');
     reRollButton.classList.toggle('disabled');
+    scoreButton.classList.toggle('disabled');
     resetDiceState();
+    resetElements()
+    roundCount += 1;
+    if (roundCount > maxRounds) endGame();
 });
-// function startGame() {
-//     diceValues = diceValues.concat(multiRoll(5, diceIdValues));
-//     for (let x = 0; x < diceValues.length; x++) {
-//         dieArray[x].dieValue = diceValues[x];
-//         altTextWriter( x );
-//         rollHistory( x );
-//     }
-//     turnRollCounter += 1;
-//     updateDiceDisplay();
-// }
 
-// function clickToSaveDie( id ) {
-//     dieArray[id].saved = true;
-//     savedDice.push(id);
-//     console.log(savedDice);
-//     // dieObject saved = true
-//     // add code to highlight selected die with css
-// }
+const spanElements = document.querySelectorAll('span');
 
-// function reRoll() {
-//     let diceNumbers = 5 - savedDice.length;
-//     let tempArray = multiRoll(diceNumbers, );
-//     let counter = 0;
-//     for (let i = 0; i < dieArray.length; i++) {
-//         if (dieArray[i].saved == false && counter < diceNumbers) {
-//             diceValues[i] = tempArray[counter];
-//             rollHistory(tempArray[counter]);
-//             counter += 1;
-//         }
-//         else {
-//             break;
-//         }
-//     }
-//     turnRollCounter += 1;
-//     updateDiceDisplay();
-// }
+spanElements.forEach(span => {
+    span.addEventListener('click', (event) => {
+        clickToSave(event.target.id);
+        console.log('Span clicked!');
+    });
+});
+const divElements = document.querySelectorAll('.die');
 
-// function rollHistory( die ) {
-//     dieHistory.push(die);
-// }  -- DEPRECATED --
+divElements.forEach(div => {
+    div.addEventListener('click', (event) => {
+        clickToSave(event.target.id);
+        console.log('Div with class "die" clicked!');
+    });
+});
+
+function clickToSave(elementId) {
+    const elementType = document.getElementById(elementId);
+    const tableKey = elementId.slice(0,-11);
+    if ((!elementType.classList.contains('saved'))) {
+        elementType.classList.add("saved");
+        if (diceState.hasOwnProperty(elementId)) {
+            diceState[elementId] = true;
+            console.log(elementId)
+        } else if (scoreTable.hasOwnProperty(tableKey)) {
+            document.getElementById(elementId).classList.add("locked");
+            console.log(tableKey)
+        }
+        console.log("Element Saved");
+    } else {
+        elementType.classList.remove("saved");
+    }
+}
