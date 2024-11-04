@@ -51,6 +51,7 @@ function resetGameState() {
 }
 function resetDiceState() {
     diceState = { ...defaultDiceState };
+    diceValues = Array(5).fill(0);
     console.log("Dice state reset to default values!");
 }
 
@@ -85,13 +86,21 @@ function rollFiveDice() {
 }
 
 function reRollDice(obj) {
+    console.log(diceValues);
     let valKey = "";
+    const keyIndexMap = {
+        dice1: 0,
+        dice2: 1,
+        dice3: 2,
+        dice4: 3,
+        dice5: 4
+    };
     for (const key in obj) {
-        if (obj[key] === false) {
+        if (obj[key] === false && keyIndexMap.hasOwnProperty(key)) {
             valKey = key + "Value";
             console.log(valKey);
             obj[valKey] = rollDice();
-            diceValues[key.slice(-1)] = obj[valKey];
+            diceValues[keyIndexMap[key]] = obj[valKey];
             console.log(diceValues);
         }
     }
@@ -125,11 +134,10 @@ function endGame() {
 }
 
 function updateDiceDisplay() {
-    document.getElementById("dice1").innerText = diceState[0];
-    document.getElementById("dice2").innerText = diceState[1];
-    document.getElementById("dice3").innerText = diceState[2];
-    document.getElementById("dice4").innerText = diceState[3];
-    document.getElementById("dice5").innerText = diceState[4];
+    for ( let i = 0; i < diceValues.length; i++ ) {
+        let dieId = "dice" + (i + 1).toString();
+        document.getElementById(dieId).innerText = diceValues[i];
+    }
 }
 
 function calculateScore() {
