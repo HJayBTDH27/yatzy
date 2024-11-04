@@ -44,25 +44,4 @@ function getRollCount() {
     return rollCount;
 }
 
-// function displayResults() {
-//     document.getElementById('diceArray').textContent = `Dice Array: ${getDiceArray().join(', ')}`;
-//     document.getElementById('yatzyArray').textContent = `Yatzy Array: ${getYatzyArray().join(', ')}`;
-//     document.getElementById('rollCount').textContent = `Roll Count: ${getRollCount()}`;
-// }
-
-//  -- DEPRECATED --
-// Run the displayResults function when the DOM is fully loaded
-// document.addEventListener('DOMContentLoaded',  displayResults);
-// document.addEventListener('click',  displayResults);
-
-
-
-// function multiRoll(diceAmount) {
-//     const diceArray = [];
-//     for (let i = 0; i < diceAmount; i++) {
-//         diceArray[i] = rollDice();
-//     }
-//     return diceArray;
-// }
-//  -- DEPRECATED --
 
