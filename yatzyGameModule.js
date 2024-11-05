@@ -167,6 +167,7 @@ function calculateScore() {
     displayScoreTable( gameCount, scoreTable );
 }
 
+// TODO: roll button has stopped disabling itself.
 rollButton.addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
@@ -224,6 +225,7 @@ function clickToSave(elementId) {
             console.log(elementId)
         } else if (scoreTable.hasOwnProperty(tableKey)) {
             document.getElementById(elementId).classList.add("locked");
+            scoreTable[tableKey].locked = true;
             console.log(tableKey)
         }
         console.log("Element Saved");

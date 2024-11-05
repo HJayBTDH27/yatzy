@@ -1,9 +1,11 @@
-export { onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
+export {
+    onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
     fourOfAKind, fourTotals, fiveTotals, sixTotals, subtotalAndBonus,
-    smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll, 
-    finalScore, yatzyTestingFunction, displayScoreTable, defaultScoreTable };
+    smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll,
+    finalScore, yatzyTestingFunction, displayScoreTable, defaultScoreTable
+};
 
-const defaultScoreTable = {
+/* -- DEPRECATED -- const defaultScoreTable = {
     "ones": 0,
     "twos": 0,
     "threes": 0,
@@ -22,17 +24,43 @@ const defaultScoreTable = {
     "yatzy": 0,
     "chance": 0,
     "finalScore": 0
-}
+} */
+
+const defaultScoreTable = {
+    "ones": { value: 0, locked: false },
+    "twos": { value: 0, locked: false },
+    "threes": { value: 0, locked: false },
+    "fours": { value: 0, locked: false },
+    "fives": { value: 0, locked: false },
+    "sixes": { value: 0, locked: false },
+    "upperScore": { value: 0, locked: false },
+    "bonus": { value: 0, locked: false },
+    "onePair": { value: 0, locked: false },
+    "twoPair": { value: 0, locked: false },
+    "threeOfAKind": { value: 0, locked: false },
+    "fourOfAKind": { value: 0, locked: false },
+    "fullHouse": { value: 0, locked: false },
+    "smallStraight": { value: 0, locked: false },
+    "largeStraight": { value: 0, locked: false },
+    "yatzy": { value: 0, locked: false },
+    "chance": { value: 0, locked: false },
+    "finalScore": { value: 0, locked: false }
+};
 
 function updateScore(category, score, table) {
     if (table.hasOwnProperty(category)) {
-        table[category] = score;
-    } else {
-        console.log("Invalid category");
+        if (table[category].locked === false) {
+            table[category].value = score;
+        } else {
+            console.log(`${category} is locked and cannot be updated.`);
+        }
+    } else { 
+        console.log("Invalid category"); 
     }
 }
 
-function oneTotals( array, table ) {
+function oneTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 1) {
@@ -44,7 +72,8 @@ function oneTotals( array, table ) {
     return total;
 }
 
-function twoTotals( array, table ) {
+function twoTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 2) {
@@ -56,7 +85,8 @@ function twoTotals( array, table ) {
     return total;
 }
 
-function threeTotals( array, table ) {
+function threeTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 3) {
@@ -68,7 +98,8 @@ function threeTotals( array, table ) {
     return total;
 }
 
-function fourTotals( array, table ) {
+function fourTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 4) {
@@ -80,7 +111,8 @@ function fourTotals( array, table ) {
     return total;
 }
 
-function fiveTotals( array, table ) {
+function fiveTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 5) {
@@ -92,7 +124,8 @@ function fiveTotals( array, table ) {
     return total;
 }
 
-function sixTotals( array, table ) {
+function sixTotals(ar, table) {
+    let array = [...ar];
     let total = 0;
     for (let x of array) {
         if (x == 6) {
@@ -104,9 +137,10 @@ function sixTotals( array, table ) {
     return total;
 }
 
-function subtotalAndBonus( array, table ) {
+function subtotalAndBonus(ar, table) {
+    let array = [...ar];
     let bonus = 0;
-    let sum = Object.values( array ).slice(0, 6).reduce((acc, curr) => acc + curr, 0);
+    let sum = Object.values(array).slice(0, 6).reduce((acc, curr) => acc + curr, 0);
     updateScore("finalScore", sum, table);
     if (sum >= 63) {
         bonus += 50;
@@ -117,7 +151,8 @@ function subtotalAndBonus( array, table ) {
     return sum, bonus;
 }
 
-function onePairTwoPair( array, table ) {
+function onePairTwoPair(ar, table) {
+    let array = [...ar];
     const numberCount = {};
     let sum = 0;
     let tally = 0;
@@ -143,7 +178,8 @@ function onePairTwoPair( array, table ) {
     }
 }
 
-function threeOfAKind( array, table ) {
+function threeOfAKind(ar, table) {
+    let array = [...ar];
     const numberCount = {};
     let sum = 0;
 
@@ -161,7 +197,8 @@ function threeOfAKind( array, table ) {
     return sum;
 }
 
-function fourOfAKind( array, table ) {
+function fourOfAKind(ar, table) {
+    let array = [...ar];
     const numberCount = {};
     let sum = 0;
 
@@ -179,7 +216,8 @@ function fourOfAKind( array, table ) {
     return sum;
 }
 
-function smallStraight( array, table ) {
+function smallStraight(ar, table) {
+    let array = [...ar];
     array.sort((a, b) => a - b);
     let consecutiveCount = 1;
     let sum = array[0]; // Start with the first number
@@ -202,7 +240,8 @@ function smallStraight( array, table ) {
     return 0;  // No small straight found
 }
 
-function largeStraight( array, table ) {
+function largeStraight(ar, table) {
+    let array = [...ar];
     array.sort((a, b) => a - b);
     let consecutiveCount = 1;
     let sum = array[0]; // Start with the first number
@@ -225,7 +264,8 @@ function largeStraight( array, table ) {
     return 0;  // No large straight found
 }
 
-function isFullHouse( array, table ) {
+function isFullHouse(ar, table) {
+    let array = [...ar];
     if (array.length !== 5) return false;
 
     const numberCount = {};
@@ -245,7 +285,8 @@ function isFullHouse( array, table ) {
     return hasThreeOfAKind && hasPair;
 }
 
-function sumFullHouse( array, table ) {
+function sumFullHouse(ar, table) {
+    let array = [...ar];
     if (isFullHouse(array)) {
         let x = array.reduce((sum, number) => sum + number, 0);
         updateScore("fullHouse", x, table);
@@ -255,7 +296,8 @@ function sumFullHouse( array, table ) {
     return 0;
 }
 
-function chance( array, table ) {
+function chance(ar, table) {
+    let array = [...ar];
     let total = 0;
     let sum = array.reduce((total, number) => total + number, 0);
     updateScore("chance", sum, table);
@@ -263,7 +305,8 @@ function chance( array, table ) {
     return sum;
 }
 
-function yatzyRoll( array, table ) {
+function yatzyRoll(ar, table) {
+    let array = [...ar];
     let flag = false;
     for (let i = 1; i < array.length; i++) {
         if (array[i] === array[i - 1]) {
@@ -280,7 +323,8 @@ function yatzyRoll( array, table ) {
     }
 }
 
-function finalScore( array, table ) {
+function finalScore(ar, table) {
+    let array = [...ar];
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
     updateScore("finalScore", sum, table);
     console.log("Totes");
@@ -288,47 +332,58 @@ function finalScore( array, table ) {
 }
 
 
-function yatzyTestingFunction( ar, table ) {
-    oneTotals( ar, table );
-    twoTotals( ar, table );
-    threeTotals( ar, table );
-    fourTotals( ar, table );
-    fiveTotals( ar, table );
-    sixTotals( ar, table );
-    subtotalAndBonus( ar, table );
-    onePairTwoPair( ar, table );
-    threeOfAKind( ar, table );
-    fourOfAKind( ar, table );
-    sumFullHouse( ar, table );
-    smallStraight( ar, table );
-    largeStraight( ar, table );
-    yatzyRoll( ar, table );
-    chance( ar, table );
-    finalScore( ar, table );
+function yatzyTestingFunction(ar, table) {
+    oneTotals(ar, table);
+    twoTotals(ar, table);
+    threeTotals(ar, table);
+    fourTotals(ar, table);
+    fiveTotals(ar, table);
+    sixTotals(ar, table);
+    subtotalAndBonus(ar, table);
+    onePairTwoPair(ar, table);
+    threeOfAKind(ar, table);
+    fourOfAKind(ar, table);
+    sumFullHouse(ar, table);
+    smallStraight(ar, table);
+    largeStraight(ar, table);
+    yatzyRoll(ar, table);
+    chance(ar, table);
+    finalScore(ar, table);
     console.log("Testing Function");
 }
 
-function displayScoreTable( gameValue, table ) {
+function displayScoreTable(gameValue, table) {
     let roundString = "Round" + gameValue;
     const totBons = document.getElementsByClassName("total-score");
+    const totBonsArray = Array.from(totBons);
     if (table["bonus"] != 0 && !document.getElementById(`bonusScoreRound${gameValue}`).classList.contains("locked")) {
         document.getElementById(`bonusScoreRound${gameValue}`).classList.set("locked");
+        table["bonus"].locked = true;
     }
     for (const key in table) {
-        if ( table.hasOwnProperty(key) ) {
+        if (table.hasOwnProperty(key)) {
             const elements = document.querySelectorAll(`#${key}Score` + roundString);
             elements.forEach((element) => {
-                if (!element.classList.contains('locked')) {
-                    element.textContent = table[key];
+                if (!element.classList.contains('locked') ) { // --REMOVED-- && table[key].locked === false
+                    element.textContent = table[key].value;
                 }
             });
-            Array.from(totBons).forEach((element) => {
-                if (!element.classList.contains('locked')) {
+/*  -- moved --          Array.from(totBons).forEach((element) => {
+                if (!element.classList.contains('locked') ) { // --REMOVED-- && table[key].locked === false
                     element.textContent = table[key];
                 }
-            });
+            }); */
         }
     }
+    totBonsArray.forEach((element) => {
+        if (!element.classList.contains('locked')) { // --REMOVED-- && table[key].locked === false
+            const key = element.id;
+            // element.textContent = table[key].value;
+            if (table.hasOwnProperty(key)) { 
+                element.textContent = table[key].value; 
+            }
+        }
+    });
     console.log("Display");
 }
 
