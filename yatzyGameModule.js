@@ -65,23 +65,40 @@ function resetDiceState() {
 function resetElements() {
     const spanElements = document.querySelectorAll('span');
     const divElements = document.querySelectorAll('div');
-
+    
     spanElements.forEach(span => {
         if ( !span.classList.contains("saved") && !span.classList.contains("locked") && !resetValue) {
             span.textContent = '0';
         } else if ( span.classList.contains("saved") && !resetValue ){ 
             span.classList.remove("saved");
             span.classList.add("locked"); 
-        } else {
+        } else if (!(span.id === `finalScoreRound${gameCount}`) && !(span.id === `upperScoreRound${gameCount}`)) {
             span.classList.remove("locked");
             span.classList.remove("saved");
             span.textContent = '0';
+        } else {
+            span.classList.add("locked"); 
         }
+        /* -- original 3rd tier code -- else {
+            span.classList.remove("locked");
+            span.classList.remove("saved");
+            span.textContent = '0';
+        }  */
     });
 
     divElements.forEach(div => {
         div.classList.remove("saved");
     });
+
+    for (const key in scoreTable) { 
+        if (scoreTable.hasOwnProperty(key)) { 
+            if (scoreTable[key].locked === false) { 
+                scoreTable[key].value = 0; 
+            } 
+        } 
+    }
+
+    // TODO: Set "upper" and "final" <span> to "locked"
 }
 
 function initializeGame() {
@@ -166,7 +183,9 @@ function updateDiceDisplay() {
 
 function calculateScore() {
     yatzyTestingFunction( diceValues, scoreTable );
-    displayScoreTable( gameCount, scoreTable );
+    console.log(`Post test- pre display scoreTable: ${JSON.stringify(scoreTable)}`);
+    displayScoreTable( gameCount, scoreTable, false );
+    console.log(`post - test / display scoreTable: ${JSON.stringify(scoreTable)}`);
 }
 
 // TODO: roll button has stopped disabling itself.
@@ -194,8 +213,11 @@ scoreButton.addEventListener('click', () => {
     rollButton.classList.toggle('disabled');
     reRollButton.classList.toggle('disabled');
     scoreButton.classList.toggle('disabled');
+    console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    resetElements();
     resetDiceState();
-    resetElements()
+    console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    displayScoreTable( gameCount, scoreTable, true);
     roundCount += 1;
     if (roundCount > maxRounds) endGame();
 });
@@ -204,7 +226,8 @@ const spanElements = document.querySelectorAll('span');
 
 spanElements.forEach(span => {
     span.addEventListener('click', (event) => {
-        clickToSave(event.target.id);
+        // clickToSave(event.target.id);
+        handleClick(event, 'span');
         console.log('Span clicked!');
     });
 });
@@ -212,31 +235,50 @@ const divElements = document.querySelectorAll('.die');
 
 divElements.forEach(div => {
     div.addEventListener('click', (event) => {
-        clickToSave(event.target.id);
-        console.log(`This is the dice target id ${event.target.id}`);
+        // clickToSave(event.target.id);
+        handleClick(event, 'div');
+        // console.log(`This is the dice target id ${event.target.id}`);
         console.log('Div with class "die" clicked!');
     });
 });
 
+// -- monitor log for troubleshooting --
+function handleClick(event, type) { const elementId = event.target.id; 
+    clickToSave(elementId); 
+    // console.log(`${type} element clicked with ID: ${elementId}`); 
+}
+
 function clickToSave(elementId) {
-    console.log(`C2S - 01 ${document.getElementById(`bonusScoreRound1`)}`);
+    // console.log(`C2S - 01 ${document.getElementById(`bonusScoreRound1`)}`);
     const elementType = document.getElementById(elementId);
+    // console.log('Element Type:',elementType);
     const tableKey = elementId.slice(0,-11);
+    
     if ((!elementType.classList.contains('saved'))) {
         elementType.classList.add("saved");
-        if (diceState.hasOwnProperty(elementId)) {
-            console.log(`C2S - 02 ${document.getElementById(`bonusScoreRound1`)}`);
+        
+        if ( diceState.hasOwnProperty(elementId) ) {
+            // console.log(`C2S - 02 ${document.getElementById(`bonusScoreRound1`)}`);
             diceState[elementId] = true;
-            console.log(elementId)
+            // console.log(elementId)
+        
         } else if (scoreTable.hasOwnProperty(tableKey)) {
-            console.log(`C2S - 03 ${document.getElementById(`bonusScoreRound1`)}`);
+            // console.log(`C2S - 03 ${document.getElementById(`bonusScoreRound1`)}`);
             document.getElementById(elementId).classList.add("locked");
             scoreTable[tableKey].locked = true;
-            console.log(tableKey)
+            // console.log(tableKey)
         }
-        console.log(`C2S - 04 ${document.getElementById(`bonusScoreRound1`)}`);
-        console.log("Element Saved");
+        
+        // console.log(`C2S - 04 ${document.getElementById(`bonusScoreRound1`)}`);
+        // console.log("Element Saved");
+    
     } else {
         elementType.classList.remove("saved");
     }
+    // console.log('Updated Total Score Elements:', document.querySelectorAll('.total-score'));
+    // const totalScoreElements = document.querySelectorAll('.total-score span');
+    // console.log('Total Score Elements after click:', totalScoreElements); 
+    // totalScoreElements.forEach((elem, index) => {
+    //     console.log(`Total Score Element ${index + 1}:`, elem);
+    // });
 }

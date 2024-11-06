@@ -33,7 +33,7 @@ const defaultScoreTable = {
     "fours": { value: 0, locked: false },
     "fives": { value: 0, locked: false },
     "sixes": { value: 0, locked: false },
-    "upperScore": { value: 0, locked: false },
+    "upper": { value: 0, locked: true },
     "bonus": { value: 0, locked: false },
     "onePair": { value: 0, locked: false },
     "twoPair": { value: 0, locked: false },
@@ -44,7 +44,7 @@ const defaultScoreTable = {
     "largeStraight": { value: 0, locked: false },
     "yatzy": { value: 0, locked: false },
     "chance": { value: 0, locked: false },
-    "finalScore": { value: 0, locked: false }
+    "final": { value: 0, locked: true }
 };
 
 /* 
@@ -157,7 +157,7 @@ function subtotalAndBonus( table ) {
     if (sum >= 63) {
         bonus += 50;
     }
-    updateScore("upperScore", sum, table);
+    updateScore("upper", sum, table);
     updateScore("bonus", bonus, table);
     console.log("Upper Score/Bonus");
     return sum, bonus;
@@ -341,7 +341,7 @@ function finalScore( table ) {
     const lowerValues = Object.keys(table) .slice(8, 17).map(key => table[key].value);
     let array = [...upperValues, ...lowerValues];
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
-    updateScore("finalScore", sum, table);
+    updateScore("final", sum, table);
     console.log(`This is the total: ${sum}`);
     return sum;
 }
@@ -377,43 +377,48 @@ function yatzyTestingFunction(ar, table) {
 * Description: The method takes the scoreTable and inserts the key values 
 *             into the appropriate <span> element in the Main html.
 */
-function displayScoreTable(gameValue, table) {
+function displayScoreTable(gameValue, table, bool) {
+    const flag = bool;
+    console.log(`The flag is set to ${flag}`);
     let roundString = `Round${gameValue}`; // + gameValue;
-    const totBons = document.getElementsByClassName("total-score");
-    const totBonsArray = Array.from(totBons);
-    console.log(`DST - 01 ${document.getElementById(`bonusScore${roundString}`)}`);
-    // console.log(document.getElementById(`DST - pre.2 bonusScoreRound${gameValue}`).classList.contains("locked"));
-    if (table["bonus"] != 0 && !document.getElementById(`bonusScoreRound${gameValue}`).classList.contains("locked")) {
+
+    if (table["bonus"].value != 0 && !document.getElementById(`bonusScoreRound${gameValue}`).classList.contains("locked")) {
         document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
         table["bonus"].locked = true;
+        console.log(`Bonus ${gameValue} locked`);
     }
+
     for (const key in table) {
         if (table.hasOwnProperty(key)) {
-            const elements = document.querySelectorAll(`#${key}Score` + roundString);
-            elements.forEach((element) => {
+            let element = document.getElementById(`${key}Score` + roundString);
+            console.log(`Found element for ${key}Score${roundString}:`, element);
+            // elements.forEach((element) => {
+            //     console.log(`Processing key: ${key}`); 
+            //     console.log(`Found elements for ${key}Score${roundString}:`, elements);
+                
                 if (!element.classList.contains('locked') ) { // --REMOVED-- && table[key].locked === false
                     element.textContent = table[key].value;
+                } else if (element.classList.contains('locked') && (key === 'final' || key === 'upper') && flag) {
+                    table[key].locked = false;
+                    element.textContent = table[key].value;
+                    console.log(`sum/final updated: ${table[key].value}`);
+                    table[key].locked = true;
                 }
-            });
-/*  -- moved --          Array.from(totBons).forEach((element) => {
-                if (!element.classList.contains('locked') ) { // --REMOVED-- && table[key].locked === false
-                    element.textContent = table[key];
-                }
-            }); */
+            // });
         }
     }
-    totBonsArray.forEach((element) => {
-        if (!element.classList.contains('locked')) { // --REMOVED-- && table[key].locked === false
-            const key = element.id;
-            console.log(`This is the key variable: ${key}`);
-            // element.textContent = table[key].value;
-            if (table.hasOwnProperty(key)) { 
-                element.textContent = table[key].value; 
-                console.log(`This is the .value variable: ${table[key].value}`);
-            }
-        }
-    });
-    console.log("Display");
+    // totBonsArray.forEach((element) => {
+    //     if (!element.classList.contains('locked')) { // --REMOVED-- && table[key].locked === false
+    //         const key = element.id;
+    //         console.log(`This is the key variable: ${key}`);
+    //         // element.textContent = table[key].value;
+    //         if (table.hasOwnProperty(key)) { 
+    //             element.textContent = table[key].value; 
+    //             console.log(`This is the .value variable: ${table[key].value}`);
+    //         }
+    //     }
+    // });
+    // console.log("Display");
 }
 
 
