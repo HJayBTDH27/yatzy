@@ -25,7 +25,7 @@ export {
     "chance": 0,
     "finalScore": 0
 } */
-
+// -- JS object holding the names as a key, with nested objects to hold score values and lock the values in
 const defaultScoreTable = {
     "ones": { value: 0, locked: false },
     "twos": { value: 0, locked: false },
@@ -47,6 +47,13 @@ const defaultScoreTable = {
     "finalScore": { value: 0, locked: false }
 };
 
+/* 
+ * Params: category - String - Key of the corresponding scoreTable
+ *         score - Number - Calculated score from selected dice
+ *         table - Object - scoreTable object to hold the values for display
+ * Returns: void
+ * Description: a method to place the calculated score into the appropriate value of the object. */
+
 function updateScore(category, score, table) {
     if (table.hasOwnProperty(category)) {
         if (table[category].locked === false) {
@@ -58,6 +65,9 @@ function updateScore(category, score, table) {
         console.log("Invalid category"); 
     }
 }
+// -- SCORE CALCULATION FUNCTIONS CORRESPONDING TO THEIR TABLE VALUES --
+// -- Params: ar - array - The values of the five dice that have been rolled
+// --         table - Object - the scoreTable that will be updated.
 
 function oneTotals(ar, table) {
     let array = [...ar];
@@ -137,11 +147,13 @@ function sixTotals(ar, table) {
     return total;
 }
 
-function subtotalAndBonus(ar, table) {
-    let array = [...ar];
+function subtotalAndBonus( table ) {
+    // let array = [...ar];
+    const firstSixValues = Object.keys(defaultScoreTable) .slice(0, 6) .map(key => defaultScoreTable[key].value);
+    let array = [...firstSixValues];
     let bonus = 0;
     let sum = Object.values(array).slice(0, 6).reduce((acc, curr) => acc + curr, 0);
-    updateScore("finalScore", sum, table);
+    // updateScore("finalScore", sum, table);
     if (sum >= 63) {
         bonus += 50;
     }
@@ -323,15 +335,22 @@ function yatzyRoll(ar, table) {
     }
 }
 
-function finalScore(ar, table) {
-    let array = [...ar];
+function finalScore( table ) {
+    // let array = [...ar];
+    const upperValues = Object.keys(table).slice(0, 6).map(key => table[key].value);
+    const lowerValues = Object.keys(table) .slice(8, 17).map(key => table[key].value);
+    let array = [...upperValues, ...lowerValues];
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
     updateScore("finalScore", sum, table);
-    console.log("Totes");
+    console.log(`This is the total: ${sum}`);
     return sum;
 }
 
-
+/*
+* Params: ar - Array - array of 5 dice values
+*         table - Object - scoreTable object
+* Description: Calls all scoreing functions to update the scoreTable
+*/
 function yatzyTestingFunction(ar, table) {
     oneTotals(ar, table);
     twoTotals(ar, table);
@@ -339,7 +358,7 @@ function yatzyTestingFunction(ar, table) {
     fourTotals(ar, table);
     fiveTotals(ar, table);
     sixTotals(ar, table);
-    subtotalAndBonus(ar, table);
+    subtotalAndBonus( table );
     onePairTwoPair(ar, table);
     threeOfAKind(ar, table);
     fourOfAKind(ar, table);
@@ -348,16 +367,24 @@ function yatzyTestingFunction(ar, table) {
     largeStraight(ar, table);
     yatzyRoll(ar, table);
     chance(ar, table);
-    finalScore(ar, table);
+    finalScore(table);
     console.log("Testing Function");
 }
 
+/*
+* Params: gameValue - Number - The current game number (1-3) 
+*         table - Object - the scoreTable we will be drawing values from
+* Description: The method takes the scoreTable and inserts the key values 
+*             into the appropriate <span> element in the Main html.
+*/
 function displayScoreTable(gameValue, table) {
-    let roundString = "Round" + gameValue;
+    let roundString = `Round${gameValue}`; // + gameValue;
     const totBons = document.getElementsByClassName("total-score");
     const totBonsArray = Array.from(totBons);
+    console.log(`DST - 01 ${document.getElementById(`bonusScore${roundString}`)}`);
+    // console.log(document.getElementById(`DST - pre.2 bonusScoreRound${gameValue}`).classList.contains("locked"));
     if (table["bonus"] != 0 && !document.getElementById(`bonusScoreRound${gameValue}`).classList.contains("locked")) {
-        document.getElementById(`bonusScoreRound${gameValue}`).classList.set("locked");
+        document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
         table["bonus"].locked = true;
     }
     for (const key in table) {
@@ -378,9 +405,11 @@ function displayScoreTable(gameValue, table) {
     totBonsArray.forEach((element) => {
         if (!element.classList.contains('locked')) { // --REMOVED-- && table[key].locked === false
             const key = element.id;
+            console.log(`This is the key variable: ${key}`);
             // element.textContent = table[key].value;
             if (table.hasOwnProperty(key)) { 
                 element.textContent = table[key].value; 
+                console.log(`This is the .value variable: ${table[key].value}`);
             }
         }
     });

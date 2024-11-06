@@ -29,14 +29,14 @@ const defaultDiceState = {
     dice4: false,
     dice5: false,
 }
-const defaultGameState = {
-    currentPlayer: 1,
-    currentGame: 1,
-    totalScores: [0],
-    winner: null
-};
+// const defaultGameState = {
+//     currentPlayer: 1,
+//     currentGame: 1,
+//     totalScores: [0],
+//     winner: null
+// };
 
-let gameState = { ...defaultGameState };
+// let gameState = { ...defaultGameState };
 let diceState = { ...defaultDiceState };
 let scoreTable = { ...defaultScoreTable };
 
@@ -47,10 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeGame();
 });
 
-function resetGameState() {
-    gameState = { ...defaultGameState };
-    console.log("Game state reset to default values!");
-}
+// function resetGameState() {
+//     gameState = { ...defaultGameState };
+//     console.log("Game state reset to default values!");
+// }
 function resetScoreTable() {
     scoreTable = { ...defaultScoreTable };
     console.log("Score table reset");
@@ -58,6 +58,7 @@ function resetScoreTable() {
 function resetDiceState() {
     diceState = { ...defaultDiceState };
     diceValues = Array(5).fill(0);
+    updateDiceDisplay();
     console.log("Dice state reset to default values!");
 }
 
@@ -85,10 +86,11 @@ function resetElements() {
 
 function initializeGame() {
     resetValue = true;
-    resetGameState();
+    // resetGameState();
     resetDiceState();
     resetScoreTable();
     resetElements();
+    updateDiceDisplay();
     console.log("New game started!");
     rollButton.classList.toggle('disabled');
     resetValue = false;
@@ -211,23 +213,28 @@ const divElements = document.querySelectorAll('.die');
 divElements.forEach(div => {
     div.addEventListener('click', (event) => {
         clickToSave(event.target.id);
+        console.log(`This is the dice target id ${event.target.id}`);
         console.log('Div with class "die" clicked!');
     });
 });
 
 function clickToSave(elementId) {
+    console.log(`C2S - 01 ${document.getElementById(`bonusScoreRound1`)}`);
     const elementType = document.getElementById(elementId);
     const tableKey = elementId.slice(0,-11);
     if ((!elementType.classList.contains('saved'))) {
         elementType.classList.add("saved");
         if (diceState.hasOwnProperty(elementId)) {
+            console.log(`C2S - 02 ${document.getElementById(`bonusScoreRound1`)}`);
             diceState[elementId] = true;
             console.log(elementId)
         } else if (scoreTable.hasOwnProperty(tableKey)) {
+            console.log(`C2S - 03 ${document.getElementById(`bonusScoreRound1`)}`);
             document.getElementById(elementId).classList.add("locked");
             scoreTable[tableKey].locked = true;
             console.log(tableKey)
         }
+        console.log(`C2S - 04 ${document.getElementById(`bonusScoreRound1`)}`);
         console.log("Element Saved");
     } else {
         elementType.classList.remove("saved");
