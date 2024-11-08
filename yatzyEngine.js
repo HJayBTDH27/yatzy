@@ -338,7 +338,7 @@ function yatzyRoll(ar, table) {
 function finalScore( table ) {
     // let array = [...ar];
     const upperValues = Object.keys(table).slice(0, 6).map(key => table[key].value);
-    const lowerValues = Object.keys(table) .slice(8, 17).map(key => table[key].value);
+    const lowerValues = Object.keys(table).slice(8, 17).map(key => table[key].value);
     let array = [...upperValues, ...lowerValues];
     let sum = Object.values(array).reduce((acc, score) => acc + score, 0);
     updateScore("final", sum, table);

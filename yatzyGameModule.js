@@ -18,11 +18,11 @@ const reRollButton = document.getElementById('reRollButton');
 const rollButton = document.getElementById('rollButton');
 
 const defaultDiceState = {
-    dice1Value: 0,
-    dice2Value: 0,
-    dice3Value: 0,
-    dice4Value: 0,
-    dice5Value: 0,
+    dice1Value: null,
+    dice2Value: null,
+    dice3Value: null,
+    dice4Value: null,
+    dice5Value: null,
     dice1: false,
     dice2: false,
     dice3: false,
@@ -213,12 +213,15 @@ scoreButton.addEventListener('click', () => {
     rollButton.classList.toggle('disabled');
     reRollButton.classList.toggle('disabled');
     scoreButton.classList.toggle('disabled');
+    scoreTable["upper", "final"].locked = false;
     console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     resetElements();
     resetDiceState();
+    calculateScore();
     console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     displayScoreTable( gameCount, scoreTable, true);
     roundCount += 1;
+    scoreTable["upper", "final"].locked = false;
     if (roundCount > maxRounds) endGame();
 });
 
