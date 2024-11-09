@@ -16,6 +16,7 @@ let roundCount = 1;
 const scoreButton = document.getElementById('scoreButton');
 const reRollButton = document.getElementById('reRollButton');
 const rollButton = document.getElementById('rollButton');
+// const buttonArray = [scoreButton, reRollButton, rollButton];
 
 const defaultDiceState = {
     dice1Value: null,
@@ -41,9 +42,12 @@ let diceState = { ...defaultDiceState };
 let scoreTable = { ...defaultScoreTable };
 
 document.addEventListener('DOMContentLoaded', () => {
-    rollButton.classList.add('disabled');
-    reRollButton.classList.add('disabled');
-    scoreButton.classList.add('disabled');
+    disableButton( rollButton );
+    disableButton( reRollButton );
+    disableButton( scoreButton );
+    // rollButton.disabled = true;
+    // reRollButton.disabled = true;
+    // scoreButton.disabled = true;
     initializeGame();
 });
 
@@ -51,6 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
 //     gameState = { ...defaultGameState };
 //     console.log("Game state reset to default values!");
 // }
+function enableButton( buttonName ) {
+    buttonName.disabled = false;
+}
+function disableButton( buttonName ) {
+    buttonName.disabled = true;
+}
+
 function resetScoreTable() {
     scoreTable = { ...defaultScoreTable };
     console.log("Score table reset");
@@ -110,7 +121,7 @@ function initializeGame() {
     resetElements();
     updateDiceDisplay();
     console.log("New game started!");
-    rollButton.classList.toggle('disabled');
+    enableButton( rollButton );
     resetValue = false;
 }
 
@@ -145,7 +156,7 @@ function reRollDice(obj) {
     }
     updateDiceDisplay();
 }
-
+//TODO There is no way to invoke endgame()
 function endGame() {
     if (gameState.totalScores[0] > gameState.totalScores[1]) {
         gameState.winner = 1;
@@ -181,7 +192,7 @@ function updateDiceDisplay() {
         }
     }
 }
-
+//TODO: Correct funtion to offer Upper sum at all times.
 function calculateScore() {
     yatzyTestingFunction( diceValues, scoreTable );
     // console.log(`Post test- pre display scoreTable: ${JSON.stringify(scoreTable)}`);
@@ -189,14 +200,17 @@ function calculateScore() {
     // console.log(`post - test / display scoreTable: ${JSON.stringify(scoreTable)}`);
 }
 
-//TODO: Buttons should just use the "disabled" element of the button, not CSS
+
 rollButton.addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
     calculateScore();
-    scoreButton.classList.toggle('disabled');
-    rollButton.classList.toggle('disabled');
-    reRollButton.classList.toggle('disabled');
+    // for (const element in buttonArray) {
+    //     toggleButton( element );
+    // }
+    enableButton( scoreButton );
+    disableButton( rollButton );
+    enableButton( reRollButton );
     turnRollCounter += 1;
     console.log(`Turn #: ${turnRollCounter}`);
 });
@@ -208,14 +222,17 @@ reRollButton.addEventListener('click', () => {
     turnRollCounter += 1;
     console.log(`Turn #: ${turnRollCounter}`);
     if (turnRollCounter > 3) {
-        reRollButton.classList.toggle('disabled');
+        disableButton( reRollButton );
     }
 });
-
+//TODO There is no way to invoke endgame()
 scoreButton.addEventListener('click', () => {
-    rollButton.classList.toggle('disabled');
-    reRollButton.classList.toggle('disabled');
-    scoreButton.classList.toggle('disabled');
+    disableButton( scoreButton );
+    enableButton( rollButton );
+    disableButton( reRollButton );
+    // for (const element in buttonArray) {
+    //     toggleButton( element );
+    // }
     scoreTable["upper", "final"].locked = false;
     // console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     console.log(`Turn #: ${turnRollCounter}`);

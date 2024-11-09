@@ -146,7 +146,7 @@ function sixTotals(ar, table) {
     // console.log("sixes");
     return total;
 }
-
+//TODO: Correct funtion to offer Upper sum at all times.
 function subtotalAndBonus( table ) {
     // let array = [...ar];
     const firstSixValues = Object.keys(defaultScoreTable) .slice(0, 6) .map(key => defaultScoreTable[key].value);
