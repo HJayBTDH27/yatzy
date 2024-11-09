@@ -78,7 +78,7 @@ function oneTotals(ar, table) {
         }
     }
     updateScore("ones", total, table);
-    console.log("Ones");
+    // console.log("Ones");
     return total;
 }
 
@@ -91,7 +91,7 @@ function twoTotals(ar, table) {
         }
     }
     updateScore("twos", total, table);
-    console.log("twos");
+    // console.log("twos");
     return total;
 }
 
@@ -104,7 +104,7 @@ function threeTotals(ar, table) {
         }
     }
     updateScore("threes", total, table);
-    console.log("threes");
+    // console.log("threes");
     return total;
 }
 
@@ -117,7 +117,7 @@ function fourTotals(ar, table) {
         }
     }
     updateScore("fours", total, table);
-    console.log("fours");
+    // console.log("fours");
     return total;
 }
 
@@ -130,7 +130,7 @@ function fiveTotals(ar, table) {
         }
     }
     updateScore("fives", total, table);
-    console.log("fives");
+    // console.log("fives");
     return total;
 }
 
@@ -143,7 +143,7 @@ function sixTotals(ar, table) {
         }
     }
     updateScore("sixes", total, table);
-    console.log("sixes");
+    // console.log("sixes");
     return total;
 }
 
@@ -159,7 +159,7 @@ function subtotalAndBonus( table ) {
     }
     updateScore("upper", sum, table);
     updateScore("bonus", bonus, table);
-    console.log("Upper Score/Bonus");
+    // console.log("Upper Score/Bonus");
     return sum, bonus;
 }
 
@@ -180,12 +180,12 @@ function onePairTwoPair(ar, table) {
     }
     if (tally > 1) {
         updateScore("twoPair", sum, table);
-        console.log("twopair");
+        // console.log("twopair");
         return;
     }
     else {
         updateScore("onePair", sum, table);
-        console.log("Onepair");
+        // console.log("Onepair");
         return;
     }
 }
@@ -205,7 +205,7 @@ function threeOfAKind(ar, table) {
         }
     }
     updateScore("threeOfAKind", sum, table);
-    console.log("three of a kind");
+    // console.log("three of a kind");
     return sum;
 }
 
@@ -224,7 +224,7 @@ function fourOfAKind(ar, table) {
         }
     }
     updateScore("fourOfAKind", sum, table);
-    console.log("four of a kind");
+    // console.log("four of a kind");
     return sum;
 }
 
@@ -248,7 +248,7 @@ function smallStraight(ar, table) {
         }
     }
     updateScore("smallStraight", 0, table);
-    console.log("small straight");
+    // console.log("small straight");
     return 0;  // No small straight found
 }
 
@@ -263,7 +263,7 @@ function largeStraight(ar, table) {
             consecutiveCount++;
             sum += array[i];
             if (consecutiveCount === 5) {
-                updateScore("smallStraight", sum, table);
+                updateScore("largeStraight", sum, table);
                 return sum;  // Found a large straight
             }
         } else if (array[i] !== array[i - 1]) {
@@ -272,7 +272,7 @@ function largeStraight(ar, table) {
         }
     }
     updateScore("largeStraight", 0, table);
-    console.log("large straight");
+    // console.log("large straight");
     return 0;  // No large straight found
 }
 
@@ -302,7 +302,7 @@ function sumFullHouse(ar, table) {
     if (isFullHouse(array)) {
         let x = array.reduce((sum, number) => sum + number, 0);
         updateScore("fullHouse", x, table);
-        console.log("full house");
+        // console.log("full house");
         return x;
     }
     return 0;
@@ -313,7 +313,7 @@ function chance(ar, table) {
     let total = 0;
     let sum = array.reduce((total, number) => total + number, 0);
     updateScore("chance", sum, table);
-    console.log("chance");
+    // console.log("chance");
     return sum;
 }
 
@@ -321,7 +321,7 @@ function yatzyRoll(ar, table) {
     let array = [...ar];
     let flag = false;
     for (let i = 1; i < array.length; i++) {
-        if (array[i] === array[i - 1]) {
+        if ((array[i] === array[i - 1]) && !(array[i] == 0)) {
             flag = true;
         } else {
             return false;
@@ -330,7 +330,7 @@ function yatzyRoll(ar, table) {
     if (flag == true) {
         let total = 50;
         updateScore("yatzy", total, table);
-        console.log("yatzy!");
+        // console.log("yatzy!");
         return total;
     }
 }
@@ -391,7 +391,7 @@ function displayScoreTable(gameValue, table, bool) {
     for (const key in table) {
         if (table.hasOwnProperty(key)) {
             let element = document.getElementById(`${key}Score` + roundString);
-            console.log(`Found element for ${key}Score${roundString}:`, element);
+            // console.log(`Found element for ${key}Score${roundString}:`, element);
             // elements.forEach((element) => {
             //     console.log(`Processing key: ${key}`); 
             //     console.log(`Found elements for ${key}Score${roundString}:`, elements);

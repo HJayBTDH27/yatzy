@@ -97,7 +97,8 @@ function resetElements() {
             } 
         } 
     }
-
+    turnRollCounter = 1;
+    console.log(`Turn #: ${turnRollCounter}`);
     // TODO: Set "upper" and "final" <span> to "locked"
 }
 
@@ -124,7 +125,7 @@ function rollFiveDice() {
 }
 
 function reRollDice(obj) {
-    console.log(diceValues);
+    // console.log(diceValues);
     let valKey = "";
     const keyIndexMap = {
         dice1: 0,
@@ -136,10 +137,10 @@ function reRollDice(obj) {
     for (const key in obj) {
         if (obj[key] === false && keyIndexMap.hasOwnProperty(key)) {
             valKey = key + "Value";
-            console.log(valKey);
+            // console.log(valKey);
             obj[valKey] = rollDice();
             diceValues[keyIndexMap[key]] = obj[valKey];
-            console.log(diceValues);
+            // console.log(diceValues);
         }
     }
     updateDiceDisplay();
@@ -183,12 +184,12 @@ function updateDiceDisplay() {
 
 function calculateScore() {
     yatzyTestingFunction( diceValues, scoreTable );
-    console.log(`Post test- pre display scoreTable: ${JSON.stringify(scoreTable)}`);
+    // console.log(`Post test- pre display scoreTable: ${JSON.stringify(scoreTable)}`);
     displayScoreTable( gameCount, scoreTable, false );
-    console.log(`post - test / display scoreTable: ${JSON.stringify(scoreTable)}`);
+    // console.log(`post - test / display scoreTable: ${JSON.stringify(scoreTable)}`);
 }
 
-// TODO: roll button has stopped disabling itself.
+//TODO: Buttons should just use the "disabled" element of the button, not CSS
 rollButton.addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
@@ -197,6 +198,7 @@ rollButton.addEventListener('click', () => {
     rollButton.classList.toggle('disabled');
     reRollButton.classList.toggle('disabled');
     turnRollCounter += 1;
+    console.log(`Turn #: ${turnRollCounter}`);
 });
 
 reRollButton.addEventListener('click', () => {
@@ -204,6 +206,7 @@ reRollButton.addEventListener('click', () => {
     updateDiceDisplay();
     calculateScore();
     turnRollCounter += 1;
+    console.log(`Turn #: ${turnRollCounter}`);
     if (turnRollCounter > 3) {
         reRollButton.classList.toggle('disabled');
     }
@@ -214,11 +217,13 @@ scoreButton.addEventListener('click', () => {
     reRollButton.classList.toggle('disabled');
     scoreButton.classList.toggle('disabled');
     scoreTable["upper", "final"].locked = false;
-    console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    // console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    console.log(`Turn #: ${turnRollCounter}`);
     resetElements();
     resetDiceState();
     calculateScore();
-    console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    console.log(`Turn #: ${turnRollCounter}`);
+    // console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     displayScoreTable( gameCount, scoreTable, true);
     roundCount += 1;
     scoreTable["upper", "final"].locked = false;
