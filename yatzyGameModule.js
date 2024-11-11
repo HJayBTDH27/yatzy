@@ -16,6 +16,8 @@ let roundCount = 1;
 const scoreButton = document.getElementById('scoreButton');
 const reRollButton = document.getElementById('reRollButton');
 const rollButton = document.getElementById('rollButton');
+const upperSpan = document.getElementById(`upperScoreRound${gameCount}`);
+const finalSpan = document.getElementById(`finalScoreRound${gameCount}`);
 // const buttonArray = [scoreButton, reRollButton, rollButton];
 
 const defaultDiceState = {
@@ -62,6 +64,12 @@ function disableButton( buttonName ) {
     buttonName.disabled = true;
 }
 
+function lockSumSpan ( spanName ) {
+    spanName.classList.add("locked");
+}
+function unlockSumSpan ( spanName ) {
+    spanName.classList.remove("locked");
+}
 function resetScoreTable() {
     scoreTable = { ...defaultScoreTable };
     console.log("Score table reset");
@@ -78,17 +86,24 @@ function resetElements() {
     const divElements = document.querySelectorAll('div');
     
     spanElements.forEach(span => {
-        if ( !span.classList.contains("saved") && !span.classList.contains("locked") && !resetValue) {
-            span.textContent = '0';
-        } else if ( span.classList.contains("saved") && !resetValue ){ 
-            span.classList.remove("saved");
-            span.classList.add("locked"); 
-        } else if (!(span.id === `finalScoreRound${gameCount}`) && !(span.id === `upperScoreRound${gameCount}`)) {
+        // Checks if there is a true flag for a full reset (initialize game only)
+        // if ( !span.classList.contains("saved") && !span.classList.contains("locked") && resetValue) {
+        if ( resetValue ) {
             span.classList.remove("locked");
             span.classList.remove("saved");
             span.textContent = '0';
-        } else {
+        // Checks if there is a false flag for a round reset
+        } else if ( span.classList.contains("saved") && resetValue===false ){ 
+            span.classList.remove("saved");
             span.classList.add("locked"); 
+        // 
+        } else if (!(span.id === `finalScoreRound${gameCount}` || span.id === `upperScoreRound${gameCount}` ) && !(span.classList.contains("locked")) && resetValue===false) {
+            // span.classList.remove("locked");
+            span.classList.remove("saved");
+            span.textContent = '0';
+
+        // } else {
+        //     span.classList.add("locked"); 
         }
         /* -- original 3rd tier code -- else {
             span.classList.remove("locked");
@@ -105,6 +120,7 @@ function resetElements() {
         if (scoreTable.hasOwnProperty(key)) { 
             if (scoreTable[key].locked === false) { 
                 scoreTable[key].value = 0; 
+                console.log(`${key} Score Value: ${scoreTable[key].value}`);
             } 
         } 
     }
@@ -120,6 +136,8 @@ function initializeGame() {
     resetScoreTable();
     resetElements();
     updateDiceDisplay();
+    lockSumSpan(upperSpan);
+    lockSumSpan(finalSpan);
     console.log("New game started!");
     enableButton( rollButton );
     resetValue = false;
@@ -158,29 +176,29 @@ function reRollDice(obj) {
 }
 //TODO There is no way to invoke endgame()
 function endGame() {
-    if (gameState.totalScores[0] > gameState.totalScores[1]) {
-        gameState.winner = 1;
-    } else if (gameState.totalScores[0] < gameState.totalScores[1]) {
-        gameState.winner = 2;
-    } else {
-        gameState.winner = "Tie";
-    }
+    // if (gameState.totalScores[0] > gameState.totalScores[1]) {
+    //     gameState.winner = 1;
+    // } else if (gameState.totalScores[0] < gameState.totalScores[1]) {
+    //     gameState.winner = 2;
+    // } else {
+    //     gameState.winner = "Tie";
+    // }
     gameCount += 1;
-    if (gameCount > maxGames) {
+    // if (gameCount > maxGames) {
         const playAgain = confirm("Do you want to play again?");
         if (playAgain) {
-            const spanElements = document.querySelectorAll('span');
+            // const spanElements = document.querySelectorAll('span');
 
-            spanElements.forEach(span => {
-                span.textContent = '0';
-                span.classList.remove("saved");
-            });
+            // spanElements.forEach(span => {
+            //     span.textContent = '0';
+            //     span.classList.remove("saved");
+            // });
             initializeGame();
         } else {
             alert("Thank you for playing!");
         }
-    }
-    console.log(`Game over! Winner: Player ${gameState.winner}`);
+    // }
+    // console.log(`Game over! Winner: Player ${gameState.winner}`);
 }
 
 function updateDiceDisplay() {
@@ -193,10 +211,14 @@ function updateDiceDisplay() {
     }
 }
 //TODO: Correct funtion to offer Upper sum at all times.
-function calculateScore() {
+function calculateScore( bool ) {
+    // unlockSumSpan(upperSpan);
+    // unlockSumSpan(finalSpan);
     yatzyTestingFunction( diceValues, scoreTable );
     // console.log(`Post test- pre display scoreTable: ${JSON.stringify(scoreTable)}`);
-    displayScoreTable( gameCount, scoreTable, false );
+    displayScoreTable( gameCount, scoreTable, bool );
+    // lockSumSpan(upperSpan);
+    // lockSumSpan(finalSpan);
     // console.log(`post - test / display scoreTable: ${JSON.stringify(scoreTable)}`);
 }
 
@@ -204,7 +226,7 @@ function calculateScore() {
 rollButton.addEventListener('click', () => {
     rollFiveDice();
     updateDiceDisplay();
-    calculateScore();
+    calculateScore( false );
     // for (const element in buttonArray) {
     //     toggleButton( element );
     // }
@@ -218,14 +240,14 @@ rollButton.addEventListener('click', () => {
 reRollButton.addEventListener('click', () => {
     reRollDice( diceState );
     updateDiceDisplay();
-    calculateScore();
+    calculateScore( false );
     turnRollCounter += 1;
     console.log(`Turn #: ${turnRollCounter}`);
     if (turnRollCounter > 3) {
         disableButton( reRollButton );
     }
 });
-//TODO There is no way to invoke endgame()
+//TODO The upper half is not locking properly, and upper sum is still not showing.
 scoreButton.addEventListener('click', () => {
     disableButton( scoreButton );
     enableButton( rollButton );
@@ -233,17 +255,20 @@ scoreButton.addEventListener('click', () => {
     // for (const element in buttonArray) {
     //     toggleButton( element );
     // }
-    scoreTable["upper", "final"].locked = false;
-    // console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
+    scoreTable["upper"].locked = false;
+    scoreTable["final"].locked = false;
+    console.log(`Pre-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     console.log(`Turn #: ${turnRollCounter}`);
     resetElements();
     resetDiceState();
-    calculateScore();
+    calculateScore( true );
     console.log(`Turn #: ${turnRollCounter}`);
-    // console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
-    displayScoreTable( gameCount, scoreTable, true);
+    // displayScoreTable( gameCount, scoreTable, true);
     roundCount += 1;
-    scoreTable["upper", "final"].locked = false;
+    console.log(`Round #: ${roundCount}`);
+    scoreTable["upper"].locked = true;
+    scoreTable["final"].locked = true;
+    console.log(`Post-reset scoreTable: ${JSON.stringify(scoreTable)}`);
     if (roundCount > maxRounds) endGame();
 });
 
@@ -289,7 +314,7 @@ function clickToSave(elementId) {
         
         } else if (scoreTable.hasOwnProperty(tableKey)) {
             // console.log(`C2S - 03 ${document.getElementById(`bonusScoreRound1`)}`);
-            document.getElementById(elementId).classList.add("locked");
+            // document.getElementById(elementId).classList.add("locked");
             scoreTable[tableKey].locked = true;
             // console.log(tableKey)
         }
@@ -299,6 +324,18 @@ function clickToSave(elementId) {
     
     } else {
         elementType.classList.remove("saved");
+        
+        if ( diceState.hasOwnProperty(elementId) ) {
+            // console.log(`C2S - 02 ${document.getElementById(`bonusScoreRound1`)}`);
+            diceState[elementId] = false;
+            // console.log(elementId)
+        
+        } else if (scoreTable.hasOwnProperty(tableKey)) {
+            // console.log(`C2S - 03 ${document.getElementById(`bonusScoreRound1`)}`);
+            // document.getElementById(elementId).classList.remove("locked");
+            scoreTable[tableKey].locked = false;
+            // console.log(tableKey)
+        }
     }
     // console.log('Updated Total Score Elements:', document.querySelectorAll('.total-score'));
     // const totalScoreElements = document.querySelectorAll('.total-score span');

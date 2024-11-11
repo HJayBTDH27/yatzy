@@ -84,7 +84,7 @@ span {
 }
 
 .locked {
-    border: 2px solid black;
+    border: 2px solid blue;
     font-weight: bolder;
     user-select: none;
 }
