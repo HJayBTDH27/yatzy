@@ -1,30 +1,7 @@
 export {
-    onePairTwoPair, oneTotals, twoTotals, threeOfAKind, threeTotals,
-    fourOfAKind, fourTotals, fiveTotals, sixTotals, subtotalAndBonus,
-    smallStraight, largeStraight, sumFullHouse, chance, yatzyRoll,
-    finalScore, yatzyTestingFunction, displayScoreTable, defaultScoreTable
+    yatzyTestingFunction, displayScoreTable, defaultScoreTable
 };
 
-/* -- DEPRECATED -- const defaultScoreTable = {
-    "ones": 0,
-    "twos": 0,
-    "threes": 0,
-    "fours": 0,
-    "fives": 0,
-    "sixes": 0,
-    "upperScore": 0,
-    "bonus": 0,
-    "onePair": 0,
-    "twoPair": 0,
-    "threeOfAKind": 0,
-    "fourOfAKind": 0,
-    "fullHouse": 0,
-    "smallStraight": 0,
-    "largeStraight": 0,
-    "yatzy": 0,
-    "chance": 0,
-    "finalScore": 0
-} */
 // -- JS object holding the names as a key, with nested objects to hold score values and lock the values in
 const defaultScoreTable = {
     "ones": { value: 0, locked: false },
@@ -146,23 +123,16 @@ function sixTotals(ar, table) {
     // console.log("sixes");
     return total;
 }
-//TODO: Correct funtion to offer Upper sum at all times.
+
 function subtotalAndBonus( table ) {
-    // let array = [...ar];
     const firstSixValues = Object.keys(defaultScoreTable) .slice(0, 6) .map(key => defaultScoreTable[key].value);
     let array = [...firstSixValues];
     console.log(`Array to sum upper: ${array}`);
     let bonus = 0;
     let sum = Object.values(array).slice(0, 6).reduce((acc, curr) => acc + curr, 0);
-    // updateScore("finalScore", sum, table);
     if (sum >= 63) {
         bonus += 50;
     }
-    // if ( sum != 0 ) { 
-    //     table["upper"].locked = false;
-    //     updateScore("upper", sum, table); 
-    //     table["upper"].locked = true;
-    // }
     updateScore("upper", sum, table);
     updateScore("bonus", bonus, table);
     // console.log("Upper Score/Bonus");
@@ -246,7 +216,7 @@ function smallStraight(ar, table) {
             sum += array[i];
             if (consecutiveCount === 4) {
                 updateScore("smallStraight", sum, table);
-                return sum;  // Found a small straight
+                return sum;  
             }
         } else if (array[i] !== array[i - 1]) {
             consecutiveCount = 1;  // Reset if not consecutive
@@ -255,7 +225,7 @@ function smallStraight(ar, table) {
     }
     updateScore("smallStraight", 0, table);
     // console.log("small straight");
-    return 0;  // No small straight found
+    return 0;  
 }
 
 function largeStraight(ar, table) {
@@ -270,7 +240,7 @@ function largeStraight(ar, table) {
             sum += array[i];
             if (consecutiveCount === 5) {
                 updateScore("largeStraight", sum, table);
-                return sum;  // Found a large straight
+                return sum;  
             }
         } else if (array[i] !== array[i - 1]) {
             consecutiveCount = 1;  // Reset if not consecutive
@@ -279,7 +249,7 @@ function largeStraight(ar, table) {
     }
     updateScore("largeStraight", 0, table);
     // console.log("large straight");
-    return 0;  // No large straight found
+    return 0; 
 }
 
 function isFullHouse(ar, table) {
@@ -316,7 +286,6 @@ function sumFullHouse(ar, table) {
 
 function chance(ar, table) {
     let array = [...ar];
-    let total = 0;
     let sum = array.reduce((total, number) => total + number, 0);
     updateScore("chance", sum, table);
     // console.log("chance");
@@ -384,53 +353,27 @@ function yatzyTestingFunction(ar, table) {
 *             into the appropriate <span> element in the Main html.
 */
 function displayScoreTable(gameValue, table, bool) {
-    // const flag = bool;
     console.log(`The flag is set to ${bool}`);
-    let roundString = `Round${gameValue}`; // + gameValue;
-// Move this conditional statement - prevents bonus from being updated.
-    // if (table["bonus"].value != 0 && !document.getElementById(`bonusScoreRound${gameValue}`).classList.contains("locked")) {
-    //     document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
-    //     table["bonus"].locked = true;
-    //     console.log(`Bonus ${gameValue} locked`);
-    // }
+    let roundString = `Round${gameValue}`;
 
     for (const key in table) {
         if (table.hasOwnProperty(key)) {
             let element = document.getElementById(`${key}Score` + roundString);
-            // console.log(`Found element for ${key}Score${roundString}:`, element);
-            // elements.forEach((element) => {
-            //     console.log(`Processing key: ${key}`); 
-            //     console.log(`Found elements for ${key}Score${roundString}:`, elements);
-                
-            // if (!element.classList.contains('locked') ) { // --REMOVED-- && table[key].locked === false
+
             if (!element.classList.contains('saved') && !element.classList.contains('locked')) {
                 element.textContent = table[key].value;
+                
                 if ( key === "bonus" && table[key].value != 0) {
                     table["bonus"].locked = true;
                     document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
                     console.log(`bonusScoreRound${gameValue} locked`);
                 }
+            
             } else if (element.classList.contains('locked') && (key === 'final' || key === 'upper') && bool) {
-                // table[key].locked = false;
                 element.textContent = table[key].value;
-                // console.log(`${key} updated: ${table[key].value}`);
-                // table[key].locked = true;
             }
-            // });
         }
     }
-    // totBonsArray.forEach((element) => {
-    //     if (!element.classList.contains('locked')) { // --REMOVED-- && table[key].locked === false
-    //         const key = element.id;
-    //         console.log(`This is the key variable: ${key}`);
-    //         // element.textContent = table[key].value;
-    //         if (table.hasOwnProperty(key)) { 
-    //             element.textContent = table[key].value; 
-    //             console.log(`This is the .value variable: ${table[key].value}`);
-    //         }
-    //     }
-    // });
-    // console.log("Display");
 }
 
 

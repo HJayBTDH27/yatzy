@@ -19,22 +19,12 @@
 // };
 //  -- DEPRECATED --
 export { rollDice };
-// const diceArray = [];
-// let yatzyArray = []
-// let rollCount = 0;
 
-// -- Simple random number generator between 1 and 6 --
-// -- elements commented out are for the testing html page --
 function rollDice() {
     let x = Math.floor(Math.random() * 6) + 1;
-    // rollCount += 1;
-    // diceArray.push(x);
-    // if (diceArray.length > 5) yatzyArray = diceArray.slice(-5);
-    // else yatzyArray.push(x);
-    // displayResults();
     return x;
 }
-
+//  -- DEPRECATED --
 // function getDiceArray() {
 //     return diceArray;
 // }
@@ -46,5 +36,6 @@ function rollDice() {
 // function getRollCount() {
 //     return rollCount;
 // }
+//  -- DEPRECATED --
 
 
