@@ -1,0 +1,14 @@
+{
+  "name": "yatzy",
+  "version": "2.0.0",
+  "description": "Client and Server interactive Yatzy game",
+  "main": "yatzyEngineNode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hugh Jay",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
