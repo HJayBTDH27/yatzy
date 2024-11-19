@@ -1,3 +1,5 @@
+//  -- DEPRECATED -- This was an attempt to use A dice class to control the majority of the game. 
+// -- it may be implemented at a later date
 // const diceIdValues = ["dice1", "dice2","dice3","dice4","dice5"];
 
 // class die {
@@ -15,50 +17,34 @@
 //         return Math.floor(Math.random() * 6) + 1;
 //     }
 // };
+//  -- DEPRECATED --
+export { rollDice };
+// const diceArray = [];
+// let yatzyArray = []
+// let rollCount = 0;
 
-const diceArray = [];
-let yatzyArray = []
-let rollCount = 0;
-
+// -- Simple random number generator between 1 and 6 --
+// -- elements commented out are for the testing html page --
 function rollDice() {
     let x = Math.floor(Math.random() * 6) + 1;
-    rollCount += 1;
-    diceArray.push(x);
-    if (diceArray.length > 5) yatzyArray = diceArray.slice(-5);
-    else yatzyArray.push(x);
-    displayResults();
+    // rollCount += 1;
+    // diceArray.push(x);
+    // if (diceArray.length > 5) yatzyArray = diceArray.slice(-5);
+    // else yatzyArray.push(x);
+    // displayResults();
     return x;
 }
 
-function getDiceArray() {
-    return diceArray;
-}
-
-function getYatzyArray() {
-    return yatzyArray;
-}
-
-function getRollCount() {
-    return rollCount;
-}
-
-function displayResults() {
-    document.getElementById('diceArray').textContent = `Dice Array: ${getDiceArray().join(', ')}`;
-    document.getElementById('yatzyArray').textContent = `Yatzy Array: ${getYatzyArray().join(', ')}`;
-    document.getElementById('rollCount').textContent = `Roll Count: ${getRollCount()}`;
-}
-
-// Run the displayResults function when the DOM is fully loaded
-// document.addEventListener('DOMContentLoaded',  displayResults);
-// document.addEventListener('click',  displayResults);
-
-
-
-// function multiRoll(diceAmount) {
-//     const diceArray = [];
-//     for (let i = 0; i < diceAmount; i++) {
-//         diceArray[i] = rollDice();
-//     }
+// function getDiceArray() {
 //     return diceArray;
 // }
+
+// function getYatzyArray() {
+//     return yatzyArray;
+// }
+
+// function getRollCount() {
+//     return rollCount;
+// }
+
 
