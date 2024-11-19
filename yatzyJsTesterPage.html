@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="yatzyStyle.css">
+    <script src="yatzyEngine.js"></script>
+    <script src="diceRoller.js"></script>
+    <title>Yatzy! Tester!</title>
+</head>
+
+
+
+<body>
+    <h1>Yahtzee Score Testing!</h1>
+    <button onclick="testFunction()">Roll Dice!</button>
+    <p id="result"></p>
+    <p>roll
+        <script>
+            function testFunction() {
+                const result = rollDice();  // Call your existing function
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = result;  // Display the returned value in the HTML
+            }
+        </script>
+    </p>
+
+    <h3>Array Printing!</h3>
+    <p id="diceArray"></p>
+    <p id="yatzyArray"></p>
+    <p id="rollCount"></p>
+
+    <h3>Yatzy scoring!</h3>
+    <p id="scoreDisplay"></p>
+</body>
