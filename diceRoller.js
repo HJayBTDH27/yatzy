@@ -19,11 +19,13 @@
 // };
 //  -- DEPRECATED --
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 3000;
 const path = require('path'); 
 
-app.use(express.static('public'));
+app.use(cors());
+app.use(express.json());
 
 app.get('/roll-dices', (req, res) => {
     let diceValues = [0,0,0,0,0];
@@ -43,10 +45,6 @@ app.get('/roll-dices', (req, res) => {
     diceValues = [...rollFiveDice()];
 
     res.json({diceValues});
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'lab07_yatzy_tester.html'));
 });
 
 app.listen(PORT, () => {

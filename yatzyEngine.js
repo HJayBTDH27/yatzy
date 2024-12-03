@@ -1,6 +1,11 @@
-export {
-    yatzyTestingFunction, displayScoreTable, defaultScoreTable
-};
+
+const express = require('express'); 
+const cors = require('cors'); 
+const app = express(); 
+const port = 3000; 
+
+app.use(cors()); 
+app.use(express.json());
 
 // -- JS object holding the names as a key, with nested objects to hold score values and lock the values in
 const defaultScoreTable = {
@@ -376,7 +381,14 @@ function displayScoreTable(gameValue, table, bool) {
     }
 }
 
-
+app.post('/update-score', (req, res) => { 
+    const { category, score } = req.body; 
+    updateScore(category, score, defaultScoreTable); 
+    res.send(defaultScoreTable); 
+}); 
+app.listen(port, () => { 
+    console.log(`Server is running on http://localhost:${port}`); 
+});
 
 
 

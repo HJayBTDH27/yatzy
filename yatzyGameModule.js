@@ -1,7 +1,15 @@
-import {
-        yatzyTestingFunction, displayScoreTable, defaultScoreTable
-    } from './yatzyEngine.js';
-import { rollDice } from './diceRoller.js';
+// import {
+//         yatzyTestingFunction, displayScoreTable, defaultScoreTable
+//     } from './yatzyEngine.js';
+// import { rollDice } from './diceRoller.js';
+
+const express = require('express'); 
+const cors = require('cors'); 
+const app = express(); 
+const port = 3000; 
+
+app.use(cors()); 
+app.use(express.json());
 
 // ---------- VARIABLE DECLARATIONS ----------
 
@@ -329,3 +337,12 @@ function clickToSave(elementId) {
         }
     }
 }
+
+app.post('/update-score', (req, res) => { 
+    const { category, score } = req.body; 
+    updateScore(category, score, defaultScoreTable); 
+    res.send(defaultScoreTable); 
+}); 
+app.listen(port, () => { 
+    console.log(`Server is running on http://localhost:${port}`); 
+});
