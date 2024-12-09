@@ -137,6 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
 /* 
 This function sets a fresh score and dice at the start of a game.
 */
+app.get('/start-game', (req, res) => {
+    initializeGame();
+});
+
 function initializeGame() {
     resetValue = true;
     resetDiceState();

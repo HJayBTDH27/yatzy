@@ -27,7 +27,13 @@ const defaultScoreTable = {
     "yatzy": { value: 0, locked: false },
     "chance": { value: 0, locked: false },
     "final": { value: 0, locked: true }
+
 };
+
+app.get('/score-table', (req, res) => {
+    res.json(defaultScoreTable);
+});
+
 
 /* 
  * Params: category - String - Key of the corresponding scoreTable
@@ -36,17 +42,20 @@ const defaultScoreTable = {
  * Returns: void
  * Description: a method to place the calculated score into the appropriate value of the object. */
 
-function updateScore(category, score, table) {
-    if (table.hasOwnProperty(category)) {
-        if (table[category].locked === false) {
-            table[category].value = score;
-        } else {
-            console.log(`${category} is locked and cannot be updated.`);
+app.post('/update-score', (req, res) => {
+    function updateScore(category, score, table) {
+        if (table.hasOwnProperty(category)) {
+            if (table[category].locked === false) {
+                table[category].value = score;
+            } else {
+                console.log(`${category} is locked and cannot be updated.`);
+            }
+        } else { 
+            console.log("Invalid category"); 
         }
-    } else { 
-        console.log("Invalid category"); 
     }
-}
+    res.json({table});
+});
 // -- SCORE CALCULATION FUNCTIONS CORRESPONDING TO THEIR TABLE VALUES --
 // -- Params: ar - array - The values of the five dice that have been rolled
 // --         table - Object - the scoreTable that will be updated.
@@ -331,25 +340,28 @@ function finalScore( table ) {
 *         table - Object - scoreTable object
 * Description: Calls all scoreing functions to update the scoreTable
 */
-function yatzyTestingFunction(ar, table) {
-    oneTotals(ar, table);
-    twoTotals(ar, table);
-    threeTotals(ar, table);
-    fourTotals(ar, table);
-    fiveTotals(ar, table);
-    sixTotals(ar, table);
-    subtotalAndBonus( table );
-    onePairTwoPair(ar, table);
-    threeOfAKind(ar, table);
-    fourOfAKind(ar, table);
-    sumFullHouse(ar, table);
-    smallStraight(ar, table);
-    largeStraight(ar, table);
-    yatzyRoll(ar, table);
-    chance(ar, table);
-    finalScore(table);
-    console.log("Testing Function");
-}
+app.post('/yatzy-testing', (req, res) => {
+    function yatzyTestingFunction(ar, table) {
+        oneTotals(ar, table);
+        twoTotals(ar, table);
+        threeTotals(ar, table);
+        fourTotals(ar, table);
+        fiveTotals(ar, table);
+        sixTotals(ar, table);
+        subtotalAndBonus( table );
+        onePairTwoPair(ar, table);
+        threeOfAKind(ar, table);
+        fourOfAKind(ar, table);
+        sumFullHouse(ar, table);
+        smallStraight(ar, table);
+        largeStraight(ar, table);
+        yatzyRoll(ar, table);
+        chance(ar, table);
+        finalScore(table);
+        console.log("Testing Function");
+    }
+    res.json({table});
+});
 
 /*
 * Params: gameValue - Number - The current game number (1-3) 
@@ -357,35 +369,38 @@ function yatzyTestingFunction(ar, table) {
 * Description: The method takes the scoreTable and inserts the key values 
 *             into the appropriate <span> element in the Main html.
 */
-function displayScoreTable(gameValue, table, bool) {
-    console.log(`The flag is set to ${bool}`);
-    let roundString = `Round${gameValue}`;
+app.get('/displays-scores', (req, res) => {
+    function displayScoreTable(gameValue, table, bool) {
+        console.log(`The flag is set to ${bool}`);
+        let roundString = `Round${gameValue}`;
 
-    for (const key in table) {
-        if (table.hasOwnProperty(key)) {
-            let element = document.getElementById(`${key}Score` + roundString);
+        for (const key in table) {
+            if (table.hasOwnProperty(key)) {
+                let element = document.getElementById(`${key}Score` + roundString);
 
-            if (!element.classList.contains('saved') && !element.classList.contains('locked')) {
-                element.textContent = table[key].value;
+                if (!element.classList.contains('saved') && !element.classList.contains('locked')) {
+                    element.textContent = table[key].value;
+                    
+                    if ( key === "bonus" && table[key].value != 0) {
+                        table["bonus"].locked = true;
+                        document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
+                        console.log(`bonusScoreRound${gameValue} locked`);
+                    }
                 
-                if ( key === "bonus" && table[key].value != 0) {
-                    table["bonus"].locked = true;
-                    document.getElementById(`bonusScoreRound${gameValue}`).classList.add("locked");
-                    console.log(`bonusScoreRound${gameValue} locked`);
+                } else if (element.classList.contains('locked') && (key === 'final' || key === 'upper') && bool) {
+                    element.textContent = table[key].value;
                 }
-            
-            } else if (element.classList.contains('locked') && (key === 'final' || key === 'upper') && bool) {
-                element.textContent = table[key].value;
             }
         }
     }
-}
+    res.json({table});
+});
 
-app.post('/update-score', (req, res) => { 
-    const { category, score } = req.body; 
-    updateScore(category, score, defaultScoreTable); 
-    res.send(defaultScoreTable); 
-}); 
+// app.post('/update-score', (req, res) => { 
+//     const { category, score } = req.body; 
+//     updateScore(category, score, defaultScoreTable); 
+//     res.send(defaultScoreTable); 
+// }); 
 app.listen(port, () => { 
     console.log(`Server is running on http://localhost:${port}`); 
 });
